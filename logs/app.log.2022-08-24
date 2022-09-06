@@ -1,0 +1,205 @@
+2022-08-24 11:34:32.055 [] [info]: Listening on port 3000..
+2022-08-24 11:34:37.053 [] [info]: Server selection timed out after 5000 ms
+2022-08-24 11:35:49.221 [] [info]: Listening on port 3000..
+2022-08-24 11:35:54.226 [] [info]: Server selection timed out after 5000 ms
+2022-08-24 11:37:40.998 [] [info]: Listening on port 3000..
+2022-08-24 11:37:41.320 [] [info]: OK
+2022-08-24 11:37:55.349 [] [info]: Listening on port 3000..
+2022-08-24 11:37:55.669 [] [info]: OK
+2022-08-24 11:45:51.189 [] [info]: Listening on port 3000..
+2022-08-24 11:45:52.086 [] [info]: OK
+2022-08-24 11:45:55.417 [] [info]: Listening on port 3000..
+2022-08-24 11:45:55.756 [] [info]: OK
+2022-08-24 11:47:16.491 [] [info]: Listening on port 3000..
+2022-08-24 11:47:17.113 [] [info]: OK
+2022-08-24 13:45:18.815 [] [info]: Listening on port 3000..
+2022-08-24 13:45:21.961 [] [info]: Listening on port 3000..
+2022-08-24 13:45:26.958 [] [info]: connect ENETUNREACH 10.14.132.44:27017
+2022-08-24 13:46:34.084 [] [info]: Listening on port 3000..
+2022-08-24 13:46:34.407 [] [info]: OK
+2022-08-24 13:57:22.602 [] [info]: Listening on port 3000..
+2022-08-24 13:57:22.887 [] [info]: Authentication failed.
+2022-08-24 14:00:55.475 [] [info]: Listening on port 3000..
+2022-08-24 14:00:55.813 [] [info]: OK
+2022-08-24 14:01:46.028 [] [info]: Listening on port 3000..
+2022-08-24 14:01:46.315 [] [info]: Authentication failed.
+2022-08-24 14:02:49.555 [] [info]: Listening on port 3000..
+2022-08-24 14:02:49.856 [] [info]: OK
+2022-08-24 14:14:05.849 [] [info]: Listening on port 3000..
+2022-08-24 14:14:06.136 [] [info]: OK
+2022-08-24 14:14:10.641 [] [info]: Listening on port 3000..
+2022-08-24 14:14:11.031 [] [info]: Authentication failed.
+2022-08-24 14:14:21.810 [] [info]: Listening on port 3000..
+2022-08-24 14:14:22.150 [] [info]: OK
+2022-08-24 14:14:25.403 [] [info]: Listening on port 3000..
+2022-08-24 14:14:25.792 [] [info]: OK
+2022-08-24 14:14:36.146 [] [info]: Listening on port 3000..
+2022-08-24 14:14:36.495 [] [info]: OK
+2022-08-24 14:14:46.872 [] [info]: Listening on port 3000..
+2022-08-24 14:14:47.184 [] [info]: OK
+2022-08-24 14:14:52.083 [] [info]: Listening on port 3000..
+2022-08-24 14:14:52.408 [] [info]: Authentication failed.
+2022-08-24 14:15:02.334 [] [info]: Listening on port 3000..
+2022-08-24 14:15:02.605 [] [info]: Authentication failed.
+2022-08-24 14:15:18.583 [] [info]: Listening on port 3000..
+2022-08-24 14:15:18.995 [] [info]: Authentication failed.
+2022-08-24 14:15:23.794 [] [info]: Listening on port 3000..
+2022-08-24 14:15:24.073 [] [info]: OK
+2022-08-24 14:15:34.696 [] [info]: Listening on port 3000..
+2022-08-24 14:15:35.003 [] [info]: OK
+2022-08-24 14:15:39.859 [] [info]: Listening on port 3000..
+2022-08-24 14:15:40.193 [] [info]: OK
+2022-08-24 14:15:46.296 [] [info]: Listening on port 3000..
+2022-08-24 14:15:46.517 [] [info]: Authentication failed.
+2022-08-24 14:18:49.024 [] [info]: Listening on port 3000..
+2022-08-24 14:18:49.352 [] [info]: OK
+2022-08-24 14:18:53.988 [] [info]: Listening on port 3000..
+2022-08-24 14:18:54.328 [] [info]: OK
+2022-08-24 14:24:47.481 [] [info]: Listening on port 3000..
+2022-08-24 14:24:47.731 [] [info]: Authentication failed.
+2022-08-24 14:30:01.276 [] [info]: Listening on port 3000..
+2022-08-24 14:30:01.585 [] [info]: Authentication failed.
+2022-08-24 15:11:24.096 [] [info]: Listening on port 3000..
+2022-08-24 15:11:24.380 [] [info]: Authentication failed.
+2022-08-24 15:11:52.029 [] [info]: Listening on port 3000..
+2022-08-24 15:11:52.353 [] [info]: Authentication failed.
+2022-08-24 15:11:58.513 [] [info]: Listening on port 3000..
+2022-08-24 15:11:58.758 [] [info]: Authentication failed.
+2022-08-24 15:12:21.671 [] [info]: Listening on port 3000..
+2022-08-24 15:12:21.919 [] [info]: Authentication failed.
+2022-08-24 15:12:44.025 [] [info]: Listening on port 3000..
+2022-08-24 15:12:44.289 [] [info]: Authentication failed.
+2022-08-24 15:12:51.062 [] [info]: Listening on port 3000..
+2022-08-24 15:12:51.280 [] [info]: Authentication failed.
+2022-08-24 15:12:54.362 [] [info]: Listening on port 3000..
+2022-08-24 15:12:54.598 [] [info]: Authentication failed.
+2022-08-24 15:13:00.719 [] [info]: Listening on port 3000..
+2022-08-24 15:13:00.959 [] [info]: Authentication failed.
+2022-08-24 15:13:09.624 [] [info]: Listening on port 3000..
+2022-08-24 15:13:09.975 [] [info]: Authentication failed.
+2022-08-24 15:13:16.281 [] [info]: Invalid scheme, expected connection string to start with "mongodb://" or "mongodb+srv://"
+2022-08-24 15:13:16.289 [] [info]: Listening on port 3000..
+2022-08-24 15:13:25.096 [] [info]: The `uri` parameter to `openUri()` must be a string, got "object". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+2022-08-24 15:13:25.106 [] [info]: Listening on port 3000..
+2022-08-24 15:15:24.829 [] [info]: Listening on port 3000..
+2022-08-24 15:15:25.134 [] [info]: Authentication failed.
+2022-08-24 15:15:27.268 [] [info]: Listening on port 3000..
+2022-08-24 15:15:27.929 [] [info]: Authentication failed.
+2022-08-24 15:15:48.954 [] [info]: Listening on port 3000..
+2022-08-24 15:15:49.209 [] [info]: Authentication failed.
+2022-08-24 18:16:51.470 [] [info]: Listening on port 3000..
+2022-08-24 18:16:51.785 [] [info]: OK
+2022-08-24 18:17:02.133 [] [info]: Listening on port 3000..
+2022-08-24 18:17:02.404 [] [info]: Authentication failed.
+2022-08-24 18:17:12.328 [] [info]: Listening on port 3000..
+2022-08-24 18:17:12.678 [] [info]: OK
+2022-08-24 21:24:52.795 [] [info]: Listening on port 3000..
+2022-08-24 21:24:52.864 [] [info]: Authentication failed.
+2022-08-24 21:28:10.983 [] [info]: Listening on port 3000..
+2022-08-24 21:28:11.071 [] [info]: Authentication failed.
+2022-08-24 21:28:15.825 [] [info]: Listening on port 3000..
+2022-08-24 21:28:15.897 [] [info]: Authentication failed.
+2022-08-24 21:32:50.377 [] [info]: Listening on port 3000..
+2022-08-24 21:32:50.456 [] [info]: OK
+2022-08-24 21:38:53.444 [] [info]: Listening on port 3000..
+2022-08-24 21:38:53.514 [] [info]: OK
+2022-08-24 21:44:22.061 [] [info]: Listening on port 3000..
+2022-08-24 21:44:22.215 [] [info]: Authentication failed.
+2022-08-24 21:46:50.984 [] [info]: Listening on port 3000..
+2022-08-24 21:46:51.055 [] [info]: OK
+2022-08-24 21:53:07.698 [] [info]: Listening on port 3000..
+2022-08-24 21:53:07.879 [] [info]: OK
+2022-08-24 21:53:17.193 [] [info]: Listening on port 3000..
+2022-08-24 21:53:17.367 [] [info]: OK
+2022-08-24 21:53:30.747 [] [info]: Listening on port 3000..
+2022-08-24 21:53:30.818 [] [info]: OK
+2022-08-24 21:53:33.830 [] [info]: Listening on port 3000..
+2022-08-24 21:53:33.997 [] [info]: OK
+2022-08-24 21:53:49.550 [] [info]: Listening on port 3000..
+2022-08-24 21:53:49.683 [] [info]: Authentication failed.
+2022-08-24 21:53:54.477 [] [info]: Listening on port 3000..
+2022-08-24 21:53:54.706 [] [info]: OK
+2022-08-24 21:57:49.537 [] [info]: Listening on port 3000..
+2022-08-24 21:57:49.642 [] [info]: OK
+2022-08-24 22:04:08.051 [] [info]: Listening on port 3000..
+2022-08-24 22:04:08.130 [] [info]: OK
+2022-08-24 22:06:11.804 [] [info]: Listening on port 3000..
+2022-08-24 22:06:11.861 [] [info]: Authentication failed.
+2022-08-24 22:06:53.556 [] [info]: Listening on port 3000..
+2022-08-24 22:06:53.612 [] [info]: Authentication failed.
+2022-08-24 22:07:14.465 [] [info]: Listening on port 3000..
+2022-08-24 22:07:14.559 [] [info]: OK
+2022-08-24 22:07:46.497 [] [info]: Listening on port 3000..
+2022-08-24 22:07:46.570 [] [info]: OK
+2022-08-24 22:07:58.535 [] [info]: Listening on port 3000..
+2022-08-24 22:07:58.598 [] [info]: OK
+2022-08-24 22:30:12.061 [] [info]: Listening on port 3000..
+2022-08-24 22:30:12.133 [] [info]: OK
+2022-08-24 22:40:29.162 [] [info]: Listening on port 3000..
+2022-08-24 22:40:29.249 [] [info]: OK
+2022-08-24 22:48:06.162 [] [info]: Listening on port 3000..
+2022-08-24 22:48:06.251 [] [info]: OK
+2022-08-24 22:48:13.411 [] [info]: Listening on port 3000..
+2022-08-24 22:48:13.492 [] [info]: OK
+2022-08-24 22:49:48.791 [] [info]: helion
+2022-08-24 22:49:48.826 [] [info]: Listening on port 3000..
+2022-08-24 22:49:48.901 [] [info]: OK
+2022-08-24 22:49:53.794 [] [info]: helion
+2022-08-24 22:49:53.816 [] [info]: Listening on port 3000..
+2022-08-24 22:49:53.895 [] [info]: OK
+2022-08-24 22:50:01.747 [] [info]: helion
+2022-08-24 22:50:01.780 [] [info]: Listening on port 3000..
+2022-08-24 22:50:01.852 [] [info]: OK
+2022-08-24 22:50:37.263 [] [info]: helion10.14.132.44
+2022-08-24 22:50:37.294 [] [info]: Listening on port 3000..
+2022-08-24 22:50:37.405 [] [info]: OK
+2022-08-24 22:50:39.011 [] [info]: helion10.14.132.4427017
+2022-08-24 22:50:39.044 [] [info]: Listening on port 3000..
+2022-08-24 22:50:39.139 [] [info]: OK
+2022-08-24 22:50:40.725 [] [info]: helion10.14.132.4427017ducnv
+2022-08-24 22:50:40.759 [] [info]: Listening on port 3000..
+2022-08-24 22:50:40.836 [] [info]: OK
+2022-08-24 22:50:42.380 [] [info]: helion10.14.132.4427017ducnv123123
+2022-08-24 22:50:42.415 [] [info]: Listening on port 3000..
+2022-08-24 22:50:42.488 [] [info]: OK
+2022-08-24 22:50:59.102 [] [info]: Listening on port 3000..
+2022-08-24 22:50:59.174 [] [info]: OK
+2022-08-24 22:53:55.971 [] [info]: Listening on port 3000..
+2022-08-24 22:53:56.055 [] [info]: OK
+2022-08-24 22:54:09.959 [] [info]: Listening on port 3000..
+2022-08-24 22:54:10.056 [] [info]: OK
+2022-08-24 22:54:13.101 [] [info]: Listening on port 3000..
+2022-08-24 22:54:13.191 [] [info]: OK
+2022-08-24 22:54:30.656 [] [info]: mongodb://ducnv:123123@10.14.132.44:27017/helion
+2022-08-24 22:54:30.690 [] [info]: Listening on port 3000..
+2022-08-24 22:54:30.794 [] [info]: OK
+2022-08-24 22:55:14.235 [] [info]: mongodb://ducnv:123123@10.14.132.44:27017/helion
+2022-08-24 22:55:14.278 [] [info]: Listening on port 3000..
+2022-08-24 22:55:14.389 [] [info]: OK
+2022-08-24 22:56:12.583 [] [info]: mongodb://ducnv:123123@10.14.132.44:27017/helion
+2022-08-24 22:56:14.284 [] [info]: mongodb://ducnv:123123@10.14.132.44:27017/helion
+2022-08-24 22:56:14.322 [] [info]: Listening on port 3000..
+2022-08-24 22:56:14.427 [] [info]: Authentication failed.
+2022-08-24 22:56:24.035 [] [info]: mongodb://ducnv:123123@10.14.132.44:27017/helion
+2022-08-24 22:56:24.068 [] [info]: Listening on port 3000..
+2022-08-24 22:56:24.137 [] [info]: Authentication failed.
+2022-08-24 22:56:29.528 [] [info]: mongodb://ducnv:123123@10.14.132.44:27017/helion
+2022-08-24 22:56:29.561 [] [info]: Listening on port 3000..
+2022-08-24 22:56:29.600 [] [info]: OK
+2022-08-24 22:56:34.743 [] [info]: Listening on port 3000..
+2022-08-24 22:56:34.782 [] [info]: OK
+2022-08-24 22:59:58.816 [] [info]: Listening on port 3000..
+2022-08-24 22:59:58.847 [] [info]: OK
+2022-08-24 23:01:17.742 [] [info]: Listening on port 3000..
+2022-08-24 23:01:17.771 [] [info]: OK
+2022-08-24 23:04:19.703 [] [info]: Listening on port 3000..
+2022-08-24 23:04:19.730 [] [info]: OK
+2022-08-24 23:05:20.937 [] [info]: mongodb://ducnv:123123@10.14.132.44:27017/helion
+2022-08-24 23:05:20.959 [] [info]: Listening on port 3000..
+2022-08-24 23:05:21.032 [] [info]: OK
+2022-08-24 23:05:32.889 [] [info]: Listening on port 3000..
+2022-08-24 23:05:32.958 [] [info]: OK
+2022-08-24 23:05:35.145 [] [info]: Listening on port 3000..
+2022-08-24 23:05:35.216 [] [info]: OK
+2022-08-24 23:15:55.283 [] [info]: Listening on port 3000..
+2022-08-24 23:15:55.358 [] [info]: OK
