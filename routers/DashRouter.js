@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllTenant, getCountAlert, getCountTicket, getDashboard } from '../controllers/dashboard/Dashboard.js';
+import { getAllTenant, getCountAlert, getCountTicket, getDashboard, getIncidentTotal } from '../controllers/dashboard/Dashboard.js';
 const router = express.Router();
 
 
@@ -24,6 +24,13 @@ router.get('/getAllTenant', async (req, res, next) => {
 router.get('/getDashboard/', async (req, res, next) => {
     let {start_day, end_day, tenant} = req.query;
     let response = await getDashboard(start_day, end_day, tenant);
+    next(response);
+})
+
+
+router.get('/getIncident/', async (req, res, next) => {
+    let {start_day, end_day, tenant} = req.query;
+    let response = await getIncidentTotal(start_day, end_day, tenant);
     next(response);
 })
 
