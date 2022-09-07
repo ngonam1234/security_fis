@@ -9,11 +9,11 @@ import { BAD_REQUEST, CREATED, NO_CONTENT, OK } from './constant/HttpResponseCod
 dotenv.config();
 const app = express();
 app.use(cors());
-const dbname = process.env.DBNAME;
-const host = process.env.HOST;
-const port = process.env.PORT;
-const user = process.env.USER;
-const pass = process.env.PASSWORD;
+const dbname = process.env.SOC_API_DBNAME;
+const host = process.env.SOC_API_HOSTDB;
+const port = process.env.SOC_API_PORTDB;
+const user = process.env.SOC_API_USERDB;
+const pass = process.env.SOC_API_PASSWORDDB;
 
 app.use(express.json())
 
@@ -51,7 +51,7 @@ mongoose.connect(dburl,
             myLogger.info("OK")
         }
     })
-const portNode = process.env.PORTNODE || 3000
+const portNode = process.env.SOC_API_PORTNODE || 3000
 const host_node = '0.0.0.0';
 function myListener() {
     myLogger.info(`Listening on port ${portNode}..`);
