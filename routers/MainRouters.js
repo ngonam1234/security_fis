@@ -27,4 +27,5 @@ router.get('/getAllUser', async (req, res, next) => {
     let response = await getAllUser();
     next(response);
 })
+
 export default router;

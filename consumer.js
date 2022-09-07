@@ -10,7 +10,8 @@ const kafka = new Kafka({
         ['10.14.132.113:9092']
 })
 
-const consumer = kafka.consumer({groupId: 'consumer-group'});
+const consumer = kafka.consumer(
+    {groupId: 'consumer-group', rackId: '1'});
 const topic = 'helion';
 
 const run = async () =>{
@@ -24,8 +25,8 @@ const run = async () =>{
                 partition, 
                 offset: message.offset,
                 value: message.value.toString(),
-                
             })
+            // process.exit();
         }
     })
 }

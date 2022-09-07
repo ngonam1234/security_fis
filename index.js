@@ -4,6 +4,7 @@ import myLogger from "./winstonLog/winston.js";
 import dotenv from 'dotenv';
 import cors from 'cors';
 import alertAPI from './routers/MainRouters.js';
+import dashboardAPI from './routers/DashRouter.js';
 import { BAD_REQUEST, CREATED, NO_CONTENT, OK } from './constant/HttpResponseCode.js';
 dotenv.config();
 const app = express();
@@ -14,8 +15,10 @@ const port = process.env.PORT;
 const user = process.env.USER;
 const pass = process.env.PASSWORD;
 
+app.use(express.json())
 
 app.use('/api/', alertAPI);
+app.use('/apiDash/', dashboardAPI);
 
 app.use((data, req, res, next) => {
     let statusCode = data.statusCode;
@@ -37,12 +40,13 @@ app.use((data, req, res, next) => {
 });
 
 
+
 const dburl = `mongodb://${user}:${pass}@${host}:${port}/${dbname}?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=${dbname}&authMechanism=SCRAM-SHA-256`
 mongoose.connect(dburl,
     { useNewUrlParser: true, useUnifiedTopology: true },
     (err) => {
         if (err) {
-            myLogger.info(err)
+            myLogger.info("%o", err)
         } else {
             myLogger.info("OK")
         }

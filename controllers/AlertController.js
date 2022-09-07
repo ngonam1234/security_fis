@@ -23,7 +23,7 @@ clientPg.connect();
 // })
 
 export async function getAllAlert() {
-    let sql = `select * from alert join alerthost a on alert.id = a.alert_id order by create_time desc limit 100000;`;
+    let sql = `select * from alert join alerthost a on alert.id = a.alert_id order by create_time desc limit 50000;`;
     let ret = undefined;
     try {
         const result = await clientPg.query(sql);
