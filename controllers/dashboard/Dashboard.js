@@ -165,3 +165,81 @@ async function getCountRule(start_day, end_day, tenant) {
     ]);
     return info;
 }
+
+
+let tenant =
+    [
+        { code: '4thaiduong' },
+        { code: '4tsoctrang' },
+        { code: 'bdi' },
+        { code: 'bsr' },
+        { code: 'bvb' },
+        { code: 'csd' },
+        { code: 'csvc' },
+        { code: 'egp' },
+        { code: 'fis' },
+        { code: 'hino' },
+        { code: 'molisa' },
+        { code: 'snz' },
+        { code: 'vietlott' },
+        { code: 'vib' },
+        { code: 'slhb' },
+        { code: 'lfvn' },
+        { code: 'bgt' },
+        { code: 'acb' },
+        { code: 'wcm' }
+    ]
+export async function getAllTenant() {
+    let ret = [];
+    for (let t of tenant) {
+        let { code } = t;
+        ret.push({ code: code.toUpperCase() })
+    }
+    return { statusCode: OK, data: { tenants: ret } };
+}
+async function getIncident(start_day, end_day, typeModel, tenant, type) {
+    let today = new Date();
+    myLogger.info("%o", { start_day, end_day, typeModel, tenant, type });
+    // let fromDate = start_day ? parseDate(start_day, 'yyyy-MM-DD').toDate() : new Date(today.setMonth(today.getMonth() - 1));
+    let fromDate = start_day ? parseDate(start_day, 'yyyy-MM-DD').toDate() : new Date(today.setMonth(today.getMonth() - 1));
+    let endDate = end_day ? parseDate(end_day, 'yyyy-MM-DD').toDate() : new Date(today.setDate(today.getDate() + 1));
+    myLogger.info("This is date new: %o", { fromDate, endDate });
+    let andCondition = tenant ? [
+        {
+            'create_time': {
+                '$gt': fromDate,
+                '$lt': endDate
+            }
+        },
+        { tenant },
+    ] : [
+        {
+            'create_time': {
+                '$gt': fromDate,
+                '$lt': endDate
+            }
+        }
+    ];
+    myLogger.info("%o", andCondition);
+    let info = await `${typeModel}`.aggregate([
+        {
+            "$match": {
+                '$and': andCondition
+            }
+        },
+        {
+            "$group": {
+                '_id': type,
+                'count': { '$sum': 1 },
+            }
+        },
+        {
+            "$sort": {
+                'count': -1
+            }
+        },
+
+        { "$limit": 10 }
+    ]);
+    return info;
+}
