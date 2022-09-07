@@ -1,7 +1,7 @@
 import { OK, SYSTEM_ERROR } from "../../constant/HttpResponseCode.js";
 import Alert from "../../models/Alert.js";
 import Ticket from "../../models/Ticket.js";
-import { formatDateFMT, parseDate, parseTimeZone } from "../../validation/ValidationUtil.js";
+import { formatDateFMT, parseDate } from "../../validation/ValidationUtil.js";
 import myLogger from "../../winstonLog/winston.js";
 
 // lấy tổng ticket trong 1 tháng
@@ -60,16 +60,17 @@ export async function getCountAlert(start_day, end_day, tenant) {
 }
 export async function getDashboard(start_day, end_day, tenant) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
-    let topSourceIp = await getCountIP(start_day, end_day, tenant, 'source');
-    let topDestIp = await getCountIP(start_day, end_day, tenant, 'destination');
-    ret = { statusCode: OK, data: { topSourceIp, topDestIp } };
+    let topSourceIp = await getCountIP(start_day, end_day, tenant, 'source', '$data');
+    let topDestIp = await getCountIP(start_day, end_day, tenant, 'destination', '$data');
+    let topRules = await getCountRule(start_day, end_day, tenant);
+    ret = { statusCode: OK, data: { topSourceIp, topDestIp, topRules } };
 
     return ret;
 }
-async function getCountIP(start_day, end_day, tenant, destination_type) {
+async function getCountIP(start_day, end_day, tenant, destination_type, type) {
 
     let today = new Date();
-    myLogger.info("%o", { start_day, end_day, tenant, destination_type });
+    myLogger.info("%o", { start_day, end_day, tenant, destination_type, type });
     let fromDate = start_day ? parseDate(start_day, 'yyyy-MM-DD').toDate() : new Date(today.setMonth(today.getMonth() - 1));
     let endDate = end_day ? parseDate(end_day, 'yyyy-MM-DD').toDate() : new Date(today.setDate(today.getDate() + 1));
     myLogger.info("%o", { endDate, fromDate });
@@ -100,7 +101,7 @@ async function getCountIP(start_day, end_day, tenant, destination_type) {
         },
         {
             "$group": {
-                '_id': "$data",
+                '_id': type,
                 'count': { '$sum': 1 },
             }
         },
@@ -118,13 +119,12 @@ async function getCountIP(start_day, end_day, tenant, destination_type) {
 }
 
 
-export async function getCountRule(start_day, end_day, tenant) {
-    let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
+async function getCountRule(start_day, end_day, tenant) {
     let today = new Date();
     myLogger.info("%o", { start_day, end_day, tenant });
     // let fromDate = start_day ? parseDate(start_day, 'yyyy-MM-DD').toDate() : new Date(today.setMonth(today.getMonth() - 1));
-    let fromDate = start_day ? parseTimeZone(start_day) : new Date(today.setMonth(today.getMonth() - 1));
-    let endDate = end_day ? parseTimeZone(end_day) : new Date(today.setDate(today.getDate() + 1));
+    let fromDate = start_day ? parseDate(start_day, 'yyyy-MM-DD').toDate() : new Date(today.setMonth(today.getMonth() - 1));
+    let endDate = end_day ? parseDate(end_day, 'yyyy-MM-DD').toDate() : new Date(today.setDate(today.getDate() + 1));
     myLogger.info("This is date new: %o", { fromDate, endDate });
     let andCondition = tenant ? [
         {
@@ -163,7 +163,5 @@ export async function getCountRule(start_day, end_day, tenant) {
 
         { "$limit": 10 }
     ]);
-    myLogger.info('%o', info);
-    ret = { statusCode: OK, data: { info } };
-    return ret;
+    return info;
 }
