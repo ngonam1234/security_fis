@@ -1,7 +1,7 @@
 import { OK, SYSTEM_ERROR } from "../../constant/HttpResponseCode.js";
 import Alert from "../../models/Alert.js";
 import Ticket from "../../models/Ticket.js";
-import { formatDateFMT, parseDate } from "../../validation/ValidationUtil.js";
+import { formatDateFMT, parseDate, parseTimeZone } from "../../validation/ValidationUtil.js";
 import myLogger from "../../winstonLog/winston.js";
 
 // lấy tổng ticket trong 1 tháng
@@ -122,8 +122,9 @@ export async function getCountRule(start_day, end_day, tenant) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     let today = new Date();
     myLogger.info("%o", { start_day, end_day, tenant });
-    let fromDate = start_day ? parseDate(start_day, 'yyyy-MM-DD').toDate() : new Date(today.setMonth(today.getMonth() - 1));
-    let endDate = end_day ? parseDate(end_day, 'yyyy-MM-DD').toDate() : new Date(today.setDate(today.getDate() + 1));
+    // let fromDate = start_day ? parseDate(start_day, 'yyyy-MM-DD').toDate() : new Date(today.setMonth(today.getMonth() - 1));
+    let fromDate = start_day ? parseTimeZone(start_day) : new Date(today.setMonth(today.getMonth() - 1));
+    let endDate = end_day ? parseTimeZone(end_day) : new Date(today.setDate(today.getDate() + 1));
     myLogger.info("This is date new: %o", { fromDate, endDate });
     let andCondition = tenant ? [
         {

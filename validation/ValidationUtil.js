@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from "moment-timezone";
 import { BAD_REQUEST } from "../constant/HttpResponseCode.js";
 import myLogger from "../winstonLog/winston.js";
 
@@ -83,11 +83,10 @@ export function parseDate(myDate, format) {
         return moment(myDate, 'YYYY-MM-dd HH:mm:ss');
     }
 }
-// export function parseTimeZone(myDate, format){
-//     if(format){
-
-//     }
-// }
+export function parseTimeZone(myDate){
+    let date = moment.tz(myDate, "Asia/Ho_Chi_Minh");
+    return date.format("yyyy-MM-DD");
+}
 export function formatDate(date) {
     if (!date) {
         return "";
