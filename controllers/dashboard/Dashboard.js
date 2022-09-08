@@ -6,7 +6,6 @@ import myLogger from "../../winstonLog/winston.js";
 
 // lấy tổng ticket trong 1 tháng
 export async function getCountTicket(start_day, end_day, tenant) {
-    let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     let info = undefined;
     let day = new Date();
     day.setMonth(day.getMonth() - 1)
@@ -28,12 +27,10 @@ export async function getCountTicket(start_day, end_day, tenant) {
     }
     myLogger.info(formatDateFMT("yyyy-MM-DD", day))
     myLogger.info("%o", info)
-    ret = { statusCode: OK, data: { info } };
-    return ret;
+    return info;
 }
 
 export async function getCountAlert(start_day, end_day, tenant) {
-    let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     let info = undefined;
     let day = new Date();
     day.setMonth(day.getMonth() - 1)
@@ -55,18 +52,22 @@ export async function getCountAlert(start_day, end_day, tenant) {
     }
     myLogger.info(formatDateFMT("yyyy-MM-DD", day))
     myLogger.info("%o", info)
-    ret = { statusCode: OK, data: { info } };
-    return ret;
+    return info;
 }
 export async function getDashboard(start_day, end_day, tenant) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     let topSourceIp = await getCountIP(start_day, end_day, tenant, 'source', '$data');
     let topDestIp = await getCountIP(start_day, end_day, tenant, 'destination', '$data');
     let topRules = await getCountRule(start_day, end_day, tenant);
+    let countTicket = await getCountTicket(start_day, end_day, tenant);
+    let countAlert = await getCountTicket(start_day, end_day, tenant);
+    let topSeverity = await getIncident(start_day, end_day, tenant, '$severity');
+    let topIsClosed = await getIncident(start_day, end_day, tenant, '$is_closed');
+
     // let topRules2 = await getCountRule2(start_day, end_day, tenant);
     // let topRules = topRules1.concat(topRules2);
     // topRules.sort((a, b) => b.count - a.count);
-    ret = { statusCode: OK, data: { topSourceIp, topDestIp, topRules } };
+    ret = { statusCode: OK, data: { topSourceIp, topDestIp, topRules, countTicket, countAlert, topSeverity, topIsClosed } };
 
     return ret;
 }

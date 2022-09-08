@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const User = mongoose.Schema({
     id: {
         type: String,
-        required: false,
+        required: true,
     },
     fullname: {
         type: String,
@@ -11,7 +11,7 @@ const User = mongoose.Schema({
     },
     email: {
         type: String,
-        required: false,
+        required: true,
     },
     password: {
         type: String,
@@ -47,8 +47,19 @@ const User = mongoose.Schema({
     },
     tenant: {
         type: String,
+        required: true,
+    },
+    twoFA:{
+        type: Boolean,
         required: false,
-    }
+        default: true
+    },
+    firstLogin2FA:{
+        type: Date,
+        required: false,
+        default: null
+    },
+    
 })
 
 

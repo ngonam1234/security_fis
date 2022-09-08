@@ -1,6 +1,6 @@
 import express from 'express';
 import { SYSTEM_ERROR } from '../constant/HttpResponseCode.js';
-import { changePassword, createUser, getAllUser, update } from '../controllers/users/UsersController.js';
+import { changePassword, createUser, getAllUser, resetFirstLogin2FA, update } from '../controllers/users/UsersController.js';
 import myLogger from '../winstonLog/winston.js';
 
 const router = express.Router();
@@ -28,7 +28,7 @@ router.put('/:id/password', async (req, res, next) => {
 })
 router.put('/:id/', async (req, res, next) => {
     myLogger.info("in ---------------")
-    let { is_active, fullname, email } = req.body;
+    let { is_active, fullname, email, twoFA } = req.body;
     let response = undefined;
     let { id } = req.params;
     if (is_active !== undefined) {
@@ -37,11 +37,22 @@ router.put('/:id/', async (req, res, next) => {
         response = await update({ id }, { fullname });
     } else if (email !== undefined) {
         response = await update({ id }, { email });
-    }else{
+    } else if (twoFA !== undefined) {
+        response = await update({ id }, { twoFA })
+    }
+    else {
         response = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     }
     next(response);
 })
+
+router.put('/:id/resetFirstLogin2FA', async (req, res, next) => {
+    let { id } = req.params;
+    let response = await resetFirstLogin2FA(id)
+    next(response);
+})
+
+
 
 
 

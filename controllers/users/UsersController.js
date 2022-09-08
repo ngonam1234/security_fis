@@ -50,6 +50,17 @@ export async function update(filter, body) {
 }
 
 
+export async function resetFirstLogin2FA(id) {
+    let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
+    let model = await User.findOneAndUpdate(
+       {id} , {firstLogin2FA: null} ,{ new: true }
+    )
+
+    myLogger.info("%o", model)
+    ret = { statusCode: OK, data: model };
+    return ret;
+}
+
 export async function changePassword(id, oldPass, newPass) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     let model = await User.findOne(
