@@ -2,12 +2,12 @@ import { OK, SYSTEM_ERROR } from "../../constant/HttpResponseCode.js";
 import User from "../../models/User.js";
 import myLogger from "../../winstonLog/winston.js";
 import bcrypt from 'bcrypt';
-import {v1 as uuidv1} from 'uuid'
+import {v1 as uuidv1, v1} from 'uuid'
 
-export async function getAllUser(start_day, end_day, tenant) {
+export async function getAllUser() {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
 
-    let info = await User.find({});
+    let info = await User.find({}).sort({create_time : -1});
     myLogger.info("%o", info)
     ret = { statusCode: OK, data: { info } };
     return ret;
@@ -20,7 +20,7 @@ export async function createUser(email, fullname, is_active, password, phone, ro
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
 
     let model = new User({
-        id: uuid.v1(),
+        id: v1(),
         fullname: fullname,
         email: email,
         password: await bcrypt.hash(password, await bcrypt.genSalt(10)),
