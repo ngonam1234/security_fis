@@ -81,8 +81,11 @@ const Alert = mongoose.Schema({
     alert_id: {
         type: String,
         required: false
+    },
+    rule_name: {
+        type: String,
+        required: false
     }
-
 })
 
 

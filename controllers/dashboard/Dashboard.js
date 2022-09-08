@@ -62,10 +62,10 @@ export async function getDashboard(start_day, end_day, tenant) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     let topSourceIp = await getCountIP(start_day, end_day, tenant, 'source', '$data');
     let topDestIp = await getCountIP(start_day, end_day, tenant, 'destination', '$data');
-    let topRules1 = await getCountRule1(start_day, end_day, tenant);
-    let topRules2 = await getCountRule2(start_day, end_day, tenant);
-    let topRules = topRules1.concat(topRules2);
-    topRules.sort((a, b) => b.count - a.count);
+    let topRules = await getCountRule(start_day, end_day, tenant);
+    // let topRules2 = await getCountRule2(start_day, end_day, tenant);
+    // let topRules = topRules1.concat(topRules2);
+    // topRules.sort((a, b) => b.count - a.count);
     ret = { statusCode: OK, data: { topSourceIp, topDestIp, topRules } };
 
     return ret;
@@ -122,7 +122,7 @@ async function getCountIP(start_day, end_day, tenant, destination_type, type) {
 }
 
 
-async function getCountRule1(start_day, end_day, tenant) {
+async function getCountRule(start_day, end_day, tenant) {
     let today = new Date();
     myLogger.info("%o", { start_day, end_day, tenant });
     // let fromDate = start_day ? parseDate(start_day, 'yyyy-MM-DD').toDate() : new Date(today.setMonth(today.getMonth() - 1));
@@ -137,7 +137,6 @@ async function getCountRule1(start_day, end_day, tenant) {
                 '$lt': endDate
             }
         },
-        { 'alert_detail._alert_watchlist_name': { "$ne": null } },
         { tenant },
     ] : [
         {
@@ -156,55 +155,7 @@ async function getCountRule1(start_day, end_day, tenant) {
         },
         {
             "$group": {
-                '_id': "$alert_detail._alert_watchlist_name",
-                'count': { '$sum': 1 },
-            }
-        },
-        {
-            "$sort": {
-                'count': -1
-            }
-        },
-
-        { "$limit": 10 }
-    ]);
-    return info;
-}
-async function getCountRule2(start_day, end_day, tenant) {
-    let today = new Date();
-    myLogger.info("%o", { start_day, end_day, tenant });
-    // let fromDate = start_day ? parseDate(start_day, 'yyyy-MM-DD').toDate() : new Date(today.setMonth(today.getMonth() - 1));
-    let fromDate = start_day ? parseDate(start_day, 'yyyy-MM-DD').toDate() : new Date(today.setMonth(today.getMonth() - 1));
-    let endDate = end_day ? parseDate(end_day, 'yyyy-MM-DD').toDate() : new Date(today.setDate(today.getDate() + 1));
-    myLogger.info("This is date new: %o", { fromDate, endDate });
-
-    let andCondition = tenant ? [
-        {
-            'create_time': {
-                '$gt': fromDate,
-                '$lt': endDate
-            }
-        },
-        { 'alert_detail.description': { "$ne": null } },
-        { tenant },
-    ] : [
-        {
-            'create_time': {
-                '$gt': fromDate,
-                '$lt': endDate
-            }
-        }
-    ];
-    myLogger.info("%o", andCondition);
-    let info = await Alert.aggregate([
-        {
-            "$match": {
-                '$and': andCondition
-            }
-        },
-        {
-            "$group": {
-                '_id': "$alert_detail.description",
+                '_id': "$rule_name",
                 'count': { '$sum': 1 },
             }
         },

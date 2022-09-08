@@ -23,7 +23,7 @@ clientPg.connect();
 // })
 
 export async function getAllAlert() {
-    let sql = `select * from alert join alerthost a on alert.id = a.alert_id order by create_time desc limit 50000;`;
+    let sql = `select  * from alert join alertrule a on alert.id = a.alert_id join alerthost a2 on alert.id = a2.alert_id order by create_time desc  limit  50000`;
     let ret = undefined;
     try {
         const result = await clientPg.query(sql);
@@ -33,11 +33,11 @@ export async function getAllAlert() {
         for (let r of res) {
             let { id, alert_name, tenant, owner_id, is_ticket, create_time, reviewed_time,
                 is_closed, alert_detail, alert_end_time, alert_log_source_id, alert_metadata
-                , alert_num_events, alert_score, alert_start_time, closing_reason, direction_type, data_type, data, alert_id } = r;
+                , alert_num_events, alert_score, alert_start_time, closing_reason, direction_type, data_type, data, alert_id, rule_name } = r;
             alerts.push({
                 id, alert_name, tenant, owner_id, is_ticket, create_time, reviewed_time,
                 is_closed, alert_detail, alert_end_time, alert_log_source_id, alert_metadata
-                , alert_num_events, alert_score, alert_start_time, closing_reason, direction_type, data_type, data, alert_id
+                , alert_num_events, alert_score, alert_start_time, closing_reason, direction_type, data_type, data, alert_id, rule_name
             })
             let alertModel = new Alert({
                 id: id,
@@ -59,7 +59,8 @@ export async function getAllAlert() {
                 direction_type: direction_type,
                 data_type: data_type,
                 data: data,
-                alert_id: alert_id
+                alert_id: alert_id,
+                rule_name: rule_name
             })
             alertModel.save();
         }
