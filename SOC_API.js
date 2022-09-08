@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import alertAPI from './routers/MainRouters.js';
 import dashboardAPI from './routers/DashRouter.js';
+import userAPI from './routers/UserRouter.js';
 import { BAD_REQUEST, CREATED, NO_CONTENT, OK } from './constant/HttpResponseCode.js';
 dotenv.config();
 const app = express();
@@ -19,6 +20,7 @@ app.use(express.json())
 
 app.use('/api/', alertAPI);
 app.use('/apiDash/', dashboardAPI);
+app.use('/apiUser/', userAPI);
 
 app.use((data, req, res, next) => {
     let statusCode = data.statusCode;
