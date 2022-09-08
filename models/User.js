@@ -44,6 +44,10 @@ const User = mongoose.Schema({
     telegram: {
         type: String,
         required: false,
+    },
+    tenant: {
+        type: String,
+        required: false,
     }
 })
 

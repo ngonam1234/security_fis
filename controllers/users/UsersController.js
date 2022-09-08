@@ -1,13 +1,12 @@
-import { OK, SYSTEM_ERROR } from "../../constant/HttpResponseCode.js";
+import { BAD_REQUEST, OK, SYSTEM_ERROR } from "../../constant/HttpResponseCode.js";
 import User from "../../models/User.js";
 import myLogger from "../../winstonLog/winston.js";
 import bcrypt from 'bcrypt';
-import {v1 as uuidv1, v1} from 'uuid'
+import { v1 as uuidv1, v1 } from 'uuid'
 
 export async function getAllUser() {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
-
-    let info = await User.find({}).sort({create_time : -1});
+    let info = await User.find({}).sort({ create_time: -1 });
     myLogger.info("%o", info)
     ret = { statusCode: OK, data: { info } };
     return ret;
@@ -16,7 +15,7 @@ export async function getAllUser() {
 
 
 
-export async function createUser(email, fullname, is_active, password, phone, role, telegram, tier) {
+export async function createUser(email, fullname, is_active, password, phone, role, telegram, tier, tenant) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
 
     let model = new User({
@@ -29,7 +28,8 @@ export async function createUser(email, fullname, is_active, password, phone, ro
         tier: tier,
         create_time: new Date(),
         phone: phone,
-        telegram: telegram
+        telegram: telegram,
+        tenant: tenant
     })
     model.save();
 
@@ -37,4 +37,34 @@ export async function createUser(email, fullname, is_active, password, phone, ro
     ret = { statusCode: OK, data: { model } };
     return ret;
 
+}
+
+export async function update(filter, body) {
+    let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
+    let model = await User.findOneAndUpdate(
+        filter, body, { new: true }
+    )
+    myLogger.info("%o", model)
+    ret = { statusCode: OK, data: model };
+    return ret;
+}
+
+
+export async function changePassword(id, oldPass, newPass) {
+    let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
+    let model = await User.findOne(
+        { id }
+    )
+    myLogger.info("%o", {model, oldPass, newPass, id})
+    let { password } = model;
+    let verify = bcrypt.compareSync(oldPass, password);
+
+    if (verify == true) {
+        await update({ id }, { password: await bcrypt.hash(newPass, await bcrypt.genSalt(10)) })
+        ret = { statusCode: OK, data: { status: 'Success' } };
+    } else {
+        ret = { statusCode: BAD_REQUEST, data: { status: 'Faild: Password not match' } };
+
+    }
+    return ret;
 }

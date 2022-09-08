@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { urlencoded } from 'express';
 import mongoose from "mongoose";
 import myLogger from "./winstonLog/winston.js";
 import dotenv from 'dotenv';
@@ -7,6 +7,7 @@ import alertAPI from './routers/MainRouters.js';
 import dashboardAPI from './routers/DashRouter.js';
 import userAPI from './routers/UserRouter.js';
 import { BAD_REQUEST, CREATED, NO_CONTENT, OK } from './constant/HttpResponseCode.js';
+import cookieParser from 'cookie-parser';
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -17,10 +18,11 @@ const user = process.env.SOC_API_USERDB;
 const pass = process.env.SOC_API_PASSWORDDB;
 
 app.use(express.json())
-
-app.use('/api/', alertAPI);
-app.use('/apiDash/', dashboardAPI);
-app.use('/apiUser/', userAPI);
+app.use(urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use('/api', alertAPI);
+app.use('/apiDash', dashboardAPI);
+app.use('/apiUser', userAPI);
 
 app.use((data, req, res, next) => {
     let statusCode = data.statusCode;
