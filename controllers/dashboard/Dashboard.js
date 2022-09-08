@@ -171,43 +171,84 @@ async function getCountRule(start_day, end_day, tenant) {
 }
 
 let tenant =
+
     [
-        { id: '4thaiduong',
-        name: "sở TTTT Hải Dương" },
-        { id: '4tsoctrang',
-        name: "sở TTTT Sóc Trăng" },
-        { id: 'bdi',
-        name: "no name" },
-        { id: 'bsr',
-        name: "no name" },
-        { id: 'bvb',
-        name: "Ngân hàng TMCP Bản Việt " },
-        { id: 'csvc',
-        name: "China Steel And Nippon Steel Vietnam Joint Stock Company" },
-        { id: 'egp',
-        name: "hệ thống đấu thầu điện tử EGP" },
-        { id: 'fis',
-        name: "FPT IS" },
-        { id: 'hino',
-        name: "no name" },
-        { id: 'molisa',
-        name: "Bộ Lao động- Thương binh và Xã hội" },
-        { id: 'snz',
-        name: "sonadezi" },
-        { id: 'vietlott',
-        name: "Vietlott" },
-        { id: 'vib' ,
-        name: "Ngân hàng Quốc Tế VIB"},
-        { id: 'slhb',
-        name: "Ngân hàng LHB" },
-        { id: 'lfvn',
-        name: "Lotte Finance Vietnam" },
-        { id: 'bgt',
-        name: "Berjaya Gia Thịnh" },
-        { id: 'acb',
-        name: "Ngân hàng thương mại cổ phần Á Châu" },
-        { id: 'wcm',
-        name: "WINCOMMERCE" }
+        {
+            id: '$All',
+            name: "All"
+        },
+        {
+            id: '4thaiduong',
+            name: "sở TTTT Hải Dương"
+        },
+        {
+            id: '4tsoctrang',
+            name: "sở TTTT Sóc Trăng"
+        },
+        {
+            id: 'bdi',
+            name: "no name"
+        },
+        {
+            id: 'bsr',
+            name: "no name"
+        },
+        {
+            id: 'bvb',
+            name: "Ngân hàng TMCP Bản Việt "
+        },
+        {
+            id: 'csvc',
+            name: "China Steel And Nippon Steel Vietnam Joint Stock Company"
+        },
+        {
+            id: 'egp',
+            name: "hệ thống đấu thầu điện tử EGP"
+        },
+        {
+            id: 'fis',
+            name: "FPT IS"
+        },
+        {
+            id: 'hino',
+            name: "no name"
+        },
+        {
+            id: 'molisa',
+            name: "Bộ Lao động- Thương binh và Xã hội"
+        },
+        {
+            id: 'snz',
+            name: "sonadezi"
+        },
+        {
+            id: 'vietlott',
+            name: "Vietlott"
+        },
+        {
+            id: 'vib',
+            name: "Ngân hàng Quốc Tế VIB"
+        },
+        {
+            id: 'slhb',
+            name: "Ngân hàng LHB"
+        },
+        {
+            id: 'lfvn',
+            name: "Lotte Finance Vietnam"
+        },
+        {
+            id: 'bgt',
+            name: "Berjaya Gia Thịnh"
+        },
+        {
+            id: 'acb',
+            name: "Ngân hàng thương mại cổ phần Á Châu"
+        },
+        {
+            id: 'wcm',
+            name: "WINCOMMERCE"
+        }
     ]
 export async function getAllTenant() {
     let ret = [];

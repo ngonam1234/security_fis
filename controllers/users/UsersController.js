@@ -2,7 +2,7 @@ import { OK, SYSTEM_ERROR } from "../../constant/HttpResponseCode.js";
 import User from "../../models/User.js";
 import myLogger from "../../winstonLog/winston.js";
 import bcrypt from 'bcrypt';
-// import uuid from 'uuid';
+import {v1 as uuidv1} from 'uuid'
 
 export async function getAllUser(start_day, end_day, tenant) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
