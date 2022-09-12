@@ -64,14 +64,15 @@ export async function getDashboard(start_day, end_day, tenant) {
     let countAlert = await getCountTicket(start_day, end_day, tenant);
     let topSeverity = await getIncident(start_day, end_day, tenant, '$severity');
     let topIsClosed = await getIncident(start_day, end_day, tenant, '$is_closed');
-    let {total} = await getCountSensor(tenant)
-    let {online} = await getCountSensor(tenant)
-    let {offline} = await getCountSensor(tenant)
+    let { total } = await getCountSensor(tenant)
+    let { online } = await getCountSensor(tenant)
+    let { offline } = await getCountSensor(tenant)
     let top10Ticket = await getTop10Ticket(start_day, end_day, tenant)
+    // let last30Days = await getCountLast30Days(start_day, end_day, tenant)
     // let topRules2 = await getCountRule2(start_day, end_day, tenant);
     // let topRules = topRules1.concat(topRules2);
     // topRules.sort((a, b) => b.count - a.count);
-    ret = { statusCode: OK, data: { topSourceIp, topDestIp, topRules, countTicket, countAlert, topSeverity, topIsClosed, total, online, offline, top10Ticket } };
+    ret = { statusCode: OK, data: { topSourceIp, topDestIp, topRules, countTicket, countAlert, topSeverity, topIsClosed, totalSensor: +total, onlineSensor: online, offlineSensor: offline, top10Ticket } };
 
     return ret;
 }
@@ -273,8 +274,73 @@ export async function getCountSensor(tenant, type) {
             tenant
         }
     )
+    if (tenant == null) {
+        info[0].total = 0
+        info[0].offline = 0
+        info[0].online = 0
+    }
     return info[0];
 }
+
+export async function getCountLast30Days(start_day, end_day, tenant) {
+    let today = new Date();
+    myLogger.info("%o", { start_day, end_day, tenant });
+    // let fromDate = start_day ? parseDate(start_day, 'yyyy-MM-DD').toDate() : new Date(today.setMonth(today.getMonth() - 1));
+    let fromDate = start_day ? parseDate(start_day, 'yyyy-MM-DD').toDate() : new Date(today.setMonth(today.getMonth() - 1));
+    let endDate = end_day ? parseDate(end_day, 'yyyy-MM-DD').toDate() : new Date(today.setDate(today.getDate() + 1));
+    myLogger.info("This is date new: %o", { fromDate, endDate });
+
+    let andCondition = tenant ? [
+        {
+            'create_time': {
+                '$gt': fromDate,
+                '$lt': endDate
+            }
+        },
+        { tenant },
+    ] : [
+        {
+            'create_time': {
+                '$gt': fromDate,
+                '$lt': endDate
+            }
+        }
+    ];
+    myLogger.info("%o", andCondition);
+    let info = await Ticket.aggregate(
+        [
+            {
+                $group:
+                {
+                    _id:
+                    {
+                        day: { $dayOfMonth: "$create_time" },
+                        month: { $month: "$create_time" },
+                        year: { $year: "$create_time" }
+                    },
+                    count: { $sum: 1 },
+                    date: { $first: "$create_time" }
+                }
+            },
+            {
+                $match: andCondition
+
+            },
+            {
+                $project:
+                {
+                    date:
+                    {
+                        $dateToString: { format: "%Y-%m-%d", date: "$date" }
+                    },
+                    count: 1,
+                    _id: 0
+                }
+            }
+        ])
+    return info;
+}
+
 
 async function getTop10Ticket(start_day, end_day, tenant) {
     let today = new Date();
