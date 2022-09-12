@@ -210,11 +210,11 @@ let tenant =
         },
         {
             id: 'bdi',
-            name: "no name"
+            name: "bdi"
         },
         {
             id: 'bsr',
-            name: "no name"
+            name: "bsr"
         },
         {
             id: 'bvb',
@@ -234,7 +234,7 @@ let tenant =
         },
         {
             id: 'hino',
-            name: "no name"
+            name: "hino"
         },
         {
             id: 'molisa',

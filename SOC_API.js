@@ -7,6 +7,7 @@ import mainAPI from './routers/MainRouters.js';
 import dashboardAPI from './routers/DashRouter.js';
 import userAPI from './routers/UserRouter.js';
 import alertAPI from './routers/AlertRouter.js';
+import tenantAPI from './routers/TenantRouter.js';
 import { BAD_REQUEST, CREATED, NO_CONTENT, OK } from './constant/HttpResponseCode.js';
 import cookieParser from 'cookie-parser';
 import { publicMobile } from './Mqtt.js';
@@ -26,6 +27,7 @@ app.use('/api', mainAPI);
 app.use('/apiDash', dashboardAPI);
 app.use('/apiUser', userAPI);
 app.use('/apiAlert', alertAPI);
+app.use('/apiTenant', tenantAPI);
 
 app.use((data, req, res, next) => {
     let statusCode = data.statusCode;

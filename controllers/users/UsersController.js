@@ -81,18 +81,18 @@ export async function changePassword(id, oldPass, newPass) {
     return ret;
 }
 
-export async function login(email, passwordtxt) {
+export async function login(emailtxt, passwordtxt) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     let model = await User.findOne(
-        { email }
+        { email: emailtxt }
     )
-    let { password, roleCode, tenant, permissions, fullname, username } = model;
-    myLogger.info("%o", { model, email, password, roleCode, tenant, permissions, fullname, username })
+    let { password, roleCode, tenant, permissions, fullname, username, email } = model;
+    myLogger.info("%o", { model, email, password, roleCode, tenant, permissions, fullname, username, email })
     if (model) {
         let verify = bcrypt.compareSync(passwordtxt, password);
         if (verify) {
-            let accessToken = genTokenStaff({password, roleCode, tenant, permissions, fullname, username});
-            let refreshToken = genRefreshTokenStaff({password, roleCode, tenant, permissions, fullname, username});
+            let accessToken = genTokenStaff({password, roleCode, tenant, permissions, fullname, username, email});
+            let refreshToken = genRefreshTokenStaff({password, roleCode, tenant, permissions, fullname, username, email});
             ret = { statusCode: OK, data: { status: 'Login Success', accessToken, refreshToken } };
         } else {
             ret = { statusCode: BAD_REQUEST, data: { status: 'Faild: Password or email not match' } };
