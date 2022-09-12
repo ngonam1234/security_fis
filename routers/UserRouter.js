@@ -8,7 +8,7 @@ const router = express.Router();
 
 
 
-router.get('/getAllUser', validateTokenStaffAccess, async (req, res, next) => {
+router.get('/getAllUser', async (req, res, next) => {
     let response = await getAllUser();
     next(response);
 })
