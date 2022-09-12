@@ -1,8 +1,8 @@
 import express from 'express';
-import { getAllAlert } from '../controllers/AlertController.js';
-import { getAllSensor } from '../controllers/SensorController.js';
-import { getAllTicket } from '../controllers/TicketController.js';
-import { getAllUser } from '../controllers/UserController.js';
+import { getAllAlert } from '../controllers/convert/AlertController.js';
+import { getAllSensor } from '../controllers/convert/SensorController.js';
+import { getAllTicket } from '../controllers/convert/TicketController.js';
+import { getAllUser } from '../controllers/convert/UserController.js';
 
 const router = express.Router();
 

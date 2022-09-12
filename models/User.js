@@ -59,6 +59,17 @@ const User = mongoose.Schema({
         required: false,
         default: null
     },
+    roleCode:{
+        type: String,
+        required: false,
+        default: 'ALERT_OBSERVER'
+    },
+
+    permissions: [
+        {
+            type: String,
+        }
+    ]
     
 })
 

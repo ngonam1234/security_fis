@@ -1,6 +1,6 @@
 import pkg from 'pg';
-import { OK, SYSTEM_ERROR } from '../constant/HttpResponseCode.js';
-import Ticket from '../models/Ticket.js';
+import { OK, SYSTEM_ERROR } from '../../constant/HttpResponseCode.js';
+import Ticket from '../../models/Ticket.js';
 const { Client } = pkg;
 
 const clientPg = new Client({

@@ -3,11 +3,13 @@ import mongoose from "mongoose";
 import myLogger from "./winstonLog/winston.js";
 import dotenv from 'dotenv';
 import cors from 'cors';
-import alertAPI from './routers/MainRouters.js';
+import mainAPI from './routers/MainRouters.js';
 import dashboardAPI from './routers/DashRouter.js';
 import userAPI from './routers/UserRouter.js';
+import alertAPI from './routers/AlertRouter.js';
 import { BAD_REQUEST, CREATED, NO_CONTENT, OK } from './constant/HttpResponseCode.js';
 import cookieParser from 'cookie-parser';
+import { publicMobile } from './Mqtt.js';
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -20,9 +22,10 @@ const pass = process.env.SOC_API_PASSWORDDB;
 app.use(express.json())
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use('/api', alertAPI);
+app.use('/api', mainAPI);
 app.use('/apiDash', dashboardAPI);
 app.use('/apiUser', userAPI);
+app.use('/apiAlert', alertAPI);
 
 app.use((data, req, res, next) => {
     let statusCode = data.statusCode;
@@ -55,6 +58,7 @@ mongoose.connect(dburl,
             myLogger.info("OK")
         }
     })
+//  publicMobile();
 const portNode = process.env.SOC_API_PORTNODE || 3000
 const host_node = '0.0.0.0';
 function myListener() {

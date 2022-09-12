@@ -1,13 +1,14 @@
 import express from 'express';
-import { SYSTEM_ERROR } from '../constant/HttpResponseCode.js';
-import { changePassword, createUser, getAllUser, resetFirstLogin2FA, update } from '../controllers/users/UsersController.js';
+import { OK, SYSTEM_ERROR } from '../constant/HttpResponseCode.js';
+import { changePassword, createUser, getAllUser, login, resetFirstLogin2FA, update } from '../controllers/users/UsersController.js';
+import { refreshToken, validateTokenStaffAccess } from '../token/ValidateToken.js';
 import myLogger from '../winstonLog/winston.js';
 
 const router = express.Router();
 
 
 
-router.get('/getAllUser', async (req, res, next) => {
+router.get('/getAllUser', validateTokenStaffAccess, async (req, res, next) => {
     let response = await getAllUser();
     next(response);
 })
@@ -28,7 +29,7 @@ router.put('/:id/password', async (req, res, next) => {
 })
 router.put('/:id/', async (req, res, next) => {
     myLogger.info("in ---------------")
-    let { is_active, fullname, email, twoFA } = req.body;
+    let { is_active, fullname, email, twoFA, roleCode, permissions } = req.body;
     let response = undefined;
     let { id } = req.params;
     if (is_active !== undefined) {
@@ -39,6 +40,11 @@ router.put('/:id/', async (req, res, next) => {
         response = await update({ id }, { email });
     } else if (twoFA !== undefined) {
         response = await update({ id }, { twoFA })
+    } else if (roleCode !== undefined) {
+        response = await update({ id }, { roleCode })
+    }
+    else if (permissions !== undefined) {
+        response = await update({ id }, { permissions })
     }
     else {
         response = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
@@ -52,6 +58,22 @@ router.put('/:id/resetFirstLogin2FA', async (req, res, next) => {
     next(response);
 })
 
+router.post('/login', async (req, res, next) => {
+    let { email, password } = req.body;
+    let response = await login(email, password)
+    next(response);
+})
+
+router.post('/refreshToken', async (req, res, next) => {
+    let { refreshtoken } = req.headers;
+    let data = refreshToken(refreshtoken);
+    let { status, accessToken } = data
+    if (status === true) {
+        next({ statusCode: OK, data: { accessToken } });
+    } else {
+        next({ statusCode: SYSTEM_ERROR, error: 'SYSTEM_ERROR', description: 'system error ne!!!' });
+    }
+})
 
 
 

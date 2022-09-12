@@ -3,6 +3,7 @@ import User from "../../models/User.js";
 import myLogger from "../../winstonLog/winston.js";
 import bcrypt from 'bcrypt';
 import { v1 as uuidv1, v1 } from 'uuid'
+import { genRefreshTokenStaff, genTokenStaff } from "../../token/ValidateToken.js";
 
 export async function getAllUser() {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
@@ -53,7 +54,7 @@ export async function update(filter, body) {
 export async function resetFirstLogin2FA(id) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     let model = await User.findOneAndUpdate(
-       {id} , {firstLogin2FA: null} ,{ new: true }
+        { id }, { firstLogin2FA: null }, { new: true }
     )
 
     myLogger.info("%o", model)
@@ -66,7 +67,7 @@ export async function changePassword(id, oldPass, newPass) {
     let model = await User.findOne(
         { id }
     )
-    myLogger.info("%o", {model, oldPass, newPass, id})
+    myLogger.info("%o", { model, oldPass, newPass, id })
     let { password } = model;
     let verify = bcrypt.compareSync(oldPass, password);
 
@@ -75,6 +76,30 @@ export async function changePassword(id, oldPass, newPass) {
         ret = { statusCode: OK, data: { status: 'Success' } };
     } else {
         ret = { statusCode: BAD_REQUEST, data: { status: 'Faild: Password not match' } };
+
+    }
+    return ret;
+}
+
+export async function login(email, passwordtxt) {
+    let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
+    let model = await User.findOne(
+        { email }
+    )
+    let { password, roleCode, tenant, permissions, fullname, username } = model;
+    myLogger.info("%o", { model, email, password, roleCode, tenant, permissions, fullname, username })
+    if (model) {
+        let verify = bcrypt.compareSync(passwordtxt, password);
+        if (verify) {
+            let accessToken = genTokenStaff({password, roleCode, tenant, permissions, fullname, username});
+            let refreshToken = genRefreshTokenStaff({password, roleCode, tenant, permissions, fullname, username});
+            ret = { statusCode: OK, data: { status: 'Login Success', accessToken, refreshToken } };
+        } else {
+            ret = { statusCode: BAD_REQUEST, data: { status: 'Faild: Password or email not match' } };
+        }
+    }
+    else {
+        ret = { statusCode: BAD_REQUEST, data: { status: 'Bad Request' } };
 
     }
     return ret;

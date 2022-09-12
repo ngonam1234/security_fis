@@ -1,7 +1,7 @@
 import pkg from 'pg';
-import { OK, SYSTEM_ERROR } from '../constant/HttpResponseCode.js';
-import myLogger from '../winstonLog/winston.js';
-import Alert from '../models/Alert.js';
+import { OK, SYSTEM_ERROR } from '../../constant/HttpResponseCode.js';
+import myLogger from '../../winstonLog/winston.js';
+import Alert from '../../models/Alert.js';
 const { Client } = pkg;
 
 const clientPg = new Client({

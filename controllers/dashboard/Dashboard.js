@@ -1,5 +1,6 @@
 import { OK, SYSTEM_ERROR } from "../../constant/HttpResponseCode.js";
 import Alert from "../../models/Alert.js";
+import Sensor from "../../models/Sensor.js";
 import Ticket from "../../models/Ticket.js";
 import { formatDateFMT, parseDate } from "../../validation/ValidationUtil.js";
 import myLogger from "../../winstonLog/winston.js";
@@ -63,11 +64,14 @@ export async function getDashboard(start_day, end_day, tenant) {
     let countAlert = await getCountTicket(start_day, end_day, tenant);
     let topSeverity = await getIncident(start_day, end_day, tenant, '$severity');
     let topIsClosed = await getIncident(start_day, end_day, tenant, '$is_closed');
-
+    let {total} = await getCountSensor(tenant)
+    let {online} = await getCountSensor(tenant)
+    let {offline} = await getCountSensor(tenant)
+    let top10Ticket = await getTop10Ticket(start_day, end_day, tenant)
     // let topRules2 = await getCountRule2(start_day, end_day, tenant);
     // let topRules = topRules1.concat(topRules2);
     // topRules.sort((a, b) => b.count - a.count);
-    ret = { statusCode: OK, data: { topSourceIp, topDestIp, topRules, countTicket, countAlert, topSeverity, topIsClosed } };
+    ret = { statusCode: OK, data: { topSourceIp, topDestIp, topRules, countTicket, countAlert, topSeverity, topIsClosed, total, online, offline, top10Ticket } };
 
     return ret;
 }
@@ -258,6 +262,66 @@ export async function getAllTenant() {
         ret.push({ id: id.toUpperCase(), name })
     }
     return { statusCode: OK, data: { tenants: ret } };
+}
+
+
+export async function getCountSensor(tenant, type) {
+    let info = undefined;
+    myLogger.info("%o", { tenant })
+    info = await Sensor.find(
+        {
+            tenant
+        }
+    )
+    return info[0];
+}
+
+async function getTop10Ticket(start_day, end_day, tenant) {
+    let today = new Date();
+    myLogger.info("%o", { start_day, end_day, tenant });
+    // let fromDate = start_day ? parseDate(start_day, 'yyyy-MM-DD').toDate() : new Date(today.setMonth(today.getMonth() - 1));
+    let fromDate = start_day ? parseDate(start_day, 'yyyy-MM-DD').toDate() : new Date(today.setMonth(today.getMonth() - 1));
+    let endDate = end_day ? parseDate(end_day, 'yyyy-MM-DD').toDate() : new Date(today.setDate(today.getDate() + 1));
+    myLogger.info("This is date new: %o", { fromDate, endDate });
+
+    let andCondition = tenant ? [
+        {
+            'create_time': {
+                '$gt': fromDate,
+                '$lt': endDate
+            }
+        },
+        { tenant },
+    ] : [
+        {
+            'create_time': {
+                '$gt': fromDate,
+                '$lt': endDate
+            }
+        }
+    ];
+    myLogger.info("%o", andCondition);
+    let info = await Ticket.aggregate([
+        {
+            "$match": {
+                '$and': andCondition
+            }
+        },
+        {
+            "$group": {
+                '_id': "$ticket_name",
+                'count': { '$sum': 1 },
+            }
+        },
+        {
+            "$sort": {
+                'count': -1
+            }
+        },
+
+        { "$limit": 10 }
+    ]);
+    return info;
 }
 
 export async function getIncidentTotal(start_day, end_day, tenant) {

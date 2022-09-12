@@ -1,7 +1,7 @@
 import pkg from 'pg';
-import { OK, SYSTEM_ERROR } from '../constant/HttpResponseCode.js';
-import Sensor from '../models/Sensor.js';
-import myLogger from '../winstonLog/winston.js';
+import { OK, SYSTEM_ERROR } from '../../constant/HttpResponseCode.js';
+import Sensor from '../../models/Sensor.js';
+import myLogger from '../../winstonLog/winston.js';
 const { Client } = pkg;
 
 const clientPg = new Client({
@@ -43,7 +43,7 @@ export async function getAllSensor() {
         }
         ret = { statusCode: OK, data: sensors };
     } catch (e) {
-        // myLogger.info("login e: %o", e);
+        myLogger.info("login e: %o", e);
         ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'System busy!' };
 
     } finally {

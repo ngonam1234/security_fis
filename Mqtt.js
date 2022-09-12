@@ -1,11 +1,11 @@
+import Role from "./models/Role.js";
 
-import mqtt from 'mqtt';
 
-let client = mqtt.connect('mqtt://180.93.175.236')
-client.on("connect", function () {
-    console.log("connected");
-})
-
-export function publicMobile(data) {
-    client.publish("mobile", JSON.stringify(data))
+export function publicMobile() {
+   let model = new Role({
+    roleCode: "SUPER_ADMIN",
+    roleName: "super admin",
+    permissions: ["CREATE_USER", "UPDATE_USER"]
+   })
+   model.save();
 }

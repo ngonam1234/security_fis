@@ -21,12 +21,14 @@ const run = async () =>{
         eachMessage: async({
             topic, partition, message
         }) =>{
-            console.log({
-                partition, 
-                offset: message.offset,
-                value: message.value.toString(),
-            })
-            // process.exit();
+            // let a = JSON.parse(message)
+            myLogger.info("This is log ===== %o", JSON.parse(message.value.toString()))
+            // console.log({
+            //     partition, 
+            //     offset: message.offset,
+            // })
+            
+            process.exit();
         }
     })
 }
