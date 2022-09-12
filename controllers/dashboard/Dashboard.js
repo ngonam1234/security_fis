@@ -56,6 +56,7 @@ export async function getCountAlert(start_day, end_day, tenant) {
     return info;
 }
 export async function getDashboard(start_day, end_day, tenant) {
+    let sensor = [];
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     let topSourceIp = await getCountIP(start_day, end_day, tenant, 'source', '$data');
     let topDestIp = await getCountIP(start_day, end_day, tenant, 'destination', '$data');
@@ -69,10 +70,15 @@ export async function getDashboard(start_day, end_day, tenant) {
     let { offline } = await getCountSensor(tenant)
     let top10Ticket = await getTop10Ticket(start_day, end_day, tenant)
     // let last30Days = await getCountLast30Days(start_day, end_day, tenant)
+    sensor.push(
+        { "_id": "total", "count": +total },
+        { "_id": "online", "count": online },
+        { "_id": "offline", "count": offline },
+    )
     // let topRules2 = await getCountRule2(start_day, end_day, tenant);
     // let topRules = topRules1.concat(topRules2);
     // topRules.sort((a, b) => b.count - a.count);
-    ret = { statusCode: OK, data: { topSourceIp, topDestIp, topRules, countTicket, countAlert, topSeverity, topIsClosed, totalSensor: +total, onlineSensor: online, offlineSensor: offline, top10Ticket } };
+    ret = { statusCode: OK, data: { topSourceIp, topDestIp, topRules, countTicket, countAlert, topSeverity, topIsClosed, sensor, top10Ticket } };
 
     return ret;
 }
