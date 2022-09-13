@@ -96,7 +96,7 @@ export async function getDashboard(start_day, end_day, tenant) {
     // let topRules2 = await getCountRule2(start_day, end_day, tenant);
     // let topRules = topRules1.concat(topRules2);
     // topRules.sort((a, b) => b.count - a.count);
-    ret = { statusCode: OK, data: { topSourceIp, topDestIp, topRules, countTicket, countAlert, incidentSeverity:topSeverity, incidentClosed:topIsClosed, sensor, getLastTicketTop, last30Days } };
+    ret = { statusCode: OK, data: { topSourceIp, topDestIp, topRules, countTicket, countAlert, incidentSeverity:topSeverity, incidentStatus:topIsClosed, sensor, getLastTicketTop, last30Days } };
 
     return ret;
 }
@@ -492,6 +492,7 @@ async function getIncident(start_day, end_day, tenant, type) {
             }
         }
     ];
+    let configtype = type == '$is_closed' ? {"$cond":[{"$eq":["$is_closed",true]},'Open','Closed']} : '$severity'
     // myLogger.info("%o", andCondition);
     let info = await Ticket.aggregate([
         {
@@ -501,7 +502,7 @@ async function getIncident(start_day, end_day, tenant, type) {
         },
         {
             "$group": {
-                '_id': type,
+                '_id': configtype,
                 'count': { '$sum': 1 },
             }
         },
