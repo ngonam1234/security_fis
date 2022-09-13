@@ -20,7 +20,7 @@ router.post('/create', validateTokenStaffAccess, async (req, res, next) => {
 router.put('/updateActive/:id', validateTokenStaffAccess, async (req, res, next) => {
     let { id } = req.params;
     let { email } = req.payload;
-    let { is_active } = req.query;
+    let { is_active } = req.body;
     myLogger.info('%o', { id, email, is_active })
 
     let response = await updateActive({ _id: id }, { created_by_update: email, is_active, update_time: new Date() });

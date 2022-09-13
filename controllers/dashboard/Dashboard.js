@@ -65,9 +65,16 @@ export async function getDashboard(start_day, end_day, tenant) {
     let countAlert = await getCountTicket(start_day, end_day, tenant);
     let topSeverity = await getIncident(start_day, end_day, tenant, '$severity');
     let topIsClosed = await getIncident(start_day, end_day, tenant, '$is_closed');
+    myLogger.info("CLosed ->>>>>%o", topIsClosed[0])
+    // let topClosed = [];
+    // if(topIsClosed[0]._id == true){
+
+    // }
+    // id()
+    // topClosed.push({})
     let Sensor = await getCountSensor(tenant)
     let getLastTicketTop = await getLastTicketTop10(start_day, end_day, tenant);
-    myLogger.info("Sensor ->>>>>%o", Sensor)
+    // myLogger.info("Sensor ->>>>>%o", Sensor)
     // let { online } = await getCountSensor(tenant)
     // let { offline } = await getCountSensor(tenant)
     // let top10Ticket = await getTop10Ticket(start_day, end_day, tenant)
@@ -89,7 +96,7 @@ export async function getDashboard(start_day, end_day, tenant) {
     // let topRules2 = await getCountRule2(start_day, end_day, tenant);
     // let topRules = topRules1.concat(topRules2);
     // topRules.sort((a, b) => b.count - a.count);
-    ret = { statusCode: OK, data: { topSourceIp, topDestIp, topRules, countTicket, countAlert, topSeverity, topIsClosed, sensor, getLastTicketTop, last30Days } };
+    ret = { statusCode: OK, data: { topSourceIp, topDestIp, topRules, countTicket, countAlert, incidentSeverity:topSeverity, incidentClosed:topIsClosed, sensor, getLastTicketTop, last30Days } };
 
     return ret;
 }
