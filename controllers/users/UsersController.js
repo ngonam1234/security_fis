@@ -6,15 +6,85 @@ import { v1 as uuidv1, v1 } from 'uuid'
 import { genRefreshTokenStaff, genTokenStaff } from "../../token/ValidateToken.js";
 import Tenant from "../../models/Tenant.js";
 
-export async function getAllUser() {
+
+// export async function getAlert(query, limit, sort, page) {
+//     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
+//     let query1 = parseStringQuery(query);
+//     myLogger.info("%o", query1);
+//     let info = await Alert.find(query1).limit(limit).sort(sort);
+//     ret = { statusCode: OK, data: { info } };
+//     return ret;
+// }
+
+export async function getAllUser(query, limit, sort, page) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
-    let info = await User.find({}).sort({ create_time: -1 });
-    myLogger.info("%o", info)
+    let query1 = parseStringQuery(query);
+    myLogger.info("%o", query1);
+    let info = await User.find(query1).limit(limit).sort(sort);
     ret = { statusCode: OK, data: { info } };
     return ret;
 
 }
 
+
+export async function queryAdvanced(queryObj) {
+    myLogger.info("In ->>>>>>")
+    let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
+    try {
+        queryObj = { ...queryObj }
+        const excludedFields = ['page', 'sort', 'limit', 'fields']
+        excludedFields.forEach(el => delete queryObj[el])
+
+        let queryString = JSON.stringify(queryObj)
+        queryString = queryString.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
+        let query = Alert.find(JSON.parse(queryString))
+
+
+        if (sort) {
+            const sortBy = query.sort.split(',').join(' ')
+            query = query.sort(sortBy)
+        } else {
+            query = query.sort('-create_time')
+        }
+
+        const tours = await query
+        ret = { statusCode: OK, data: tours };
+        myLogger.info("OUT ->>>>>>")
+
+    } catch (error) {
+        ret = { statusCode: BAD_REQUEST, data: 'Bad request' };
+    }
+    return ret;
+}
+
+function parseStringQuery(query) {
+    let ret = Object.create(null);
+    //url =    path?query=name%like%Binh,Hung;status%eq%Closed
+    // req.query = name%eq%Binh;status%eq%Closed
+    let qs = query.split(';'); // 
+    for (let q of qs) { // q = name%eq%Binh
+        let objs = q.split('%'); //[name,eq,Binh]
+        if (objs.length === 3) {
+            if (objs[1] === 'eq') {
+                ret[objs[0]] = objs[2];
+            } else if (objs[1] === 'like') {
+                let objs1 = objs[2].split(',')
+                let m = objs1[0];
+                for (let i = 1; i < objs1.length; i++) {
+                    m += `.*${objs1[i]}`;
+                }
+                // let t = {$or : m};
+                let temp = { $regex: m };
+
+                ret[objs[0]] = temp;
+            } else if (objs[1] === 'neq') {
+                let temp = { $ne: objs[2] };
+                ret[objs[0]] = temp;
+            }
+        }
+    }
+    return ret;
+}
 
 
 export async function createUser(email, fullname, is_active, password, phone, role, telegram, tier, tenant) {
