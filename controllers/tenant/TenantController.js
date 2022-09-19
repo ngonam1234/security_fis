@@ -68,10 +68,11 @@ export async function getDetailTenant(_id) {
 
 }
 
-// template1 = {
-//     code:'Template1',
-//     content: "This is param1 = {{param1}}....",
-//     params:[
-//         "params1"
-//     ]
-// }
+const template1 = {
+    code:'Template1',
+    content: "This is param1 = {{param1}}....",
+    params:[
+        "params1"
+    ]
+}
+

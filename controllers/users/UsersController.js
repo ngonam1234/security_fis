@@ -4,6 +4,7 @@ import myLogger from "../../winstonLog/winston.js";
 import bcrypt from 'bcrypt';
 import { v1 as uuidv1, v1 } from 'uuid'
 import { genRefreshTokenStaff, genTokenStaff } from "../../token/ValidateToken.js";
+import Tenant from "../../models/Tenant.js";
 
 export async function getAllUser() {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
@@ -86,14 +87,24 @@ export async function login(emailtxt, passwordtxt) {
     let model = await User.findOne(
         { email: emailtxt }
     )
+
     let { password, roleCode, tenant, permissions, fullname, username, email } = model;
-    myLogger.info("%o", { model, email, password, roleCode, tenant, permissions, fullname, username, email })
+
+    // myLogger.info("%o", { model, email, password, roleCode, tenant, permissions, fullname, username, email })
     if (model) {
+
         let verify = bcrypt.compareSync(passwordtxt, password);
         if (verify) {
-            let accessToken = genTokenStaff({password, roleCode, tenant, permissions, fullname, username, email});
-            let refreshToken = genRefreshTokenStaff({password, roleCode, tenant, permissions, fullname, username, email});
-            ret = { statusCode: OK, data: { status: 'Login Success', accessToken, refreshToken } };
+            let tenantModel = await Tenant.find(tenant === '$ALL' ? { is_active: false } : { code: tenant, is_active: false });
+            let tenants = [];
+            for (let tM of tenantModel) {
+                let { code, name } = tM;
+                tenants.push({ code, name });
+            }
+            myLogger.info("%o", tenants)
+            let accessToken = genTokenStaff({ roleCode, tenants, permissions, fullname, email });
+            let refreshToken = genRefreshTokenStaff({ roleCode, tenants, permissions, fullname, email });
+            ret = { statusCode: OK, data: { status: 'Login Success', accessToken, refreshToken, role: roleCode, tenants, permissions, name: fullname, email } };
         } else {
             ret = { statusCode: BAD_REQUEST, data: { status: 'Faild: Password or email not match' } };
         }
