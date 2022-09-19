@@ -34,8 +34,10 @@ router.put('/:id/', validateTokenStaffAccess, async (req, res, next) => {
 
 router.post('/create/:id', validateTokenStaffAccess, async (req, res, next) => {
     let { id } = req.params;
-    let { severity, created_by, owners } = req.body;
-    let response = await createTicket(id, severity, created_by, owners);
+    let { severity, owners } = req.body;
+    let { email } = req.payload;
+    let acc = email.split("@");
+    let response = await createTicket(id, severity, acc[0], owners);
     next(response)
 })
 
