@@ -18,7 +18,7 @@ router.get('/:id', validateTokenStaffAccess, async (req, res, next) => {
 })
 
 
-router.get('/', async (req, res, next) => {
+router.get('/', validateTokenStaffAccess, async (req, res, next) => {
     let { query, limit, sort, page } = req.query;
     let response = await getAlert(query, limit, sort, page);
     next(response);
