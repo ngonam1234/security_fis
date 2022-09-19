@@ -61,25 +61,27 @@ function parseStringQuery(query) {
     let ret = Object.create(null);
     //url =    path?query=name%like%Binh,Hung;status%eq%Closed
     // req.query = name%eq%Binh;status%eq%Closed
-    let qs = query.split(';'); // 
-    for (let q of qs) { // q = name%eq%Binh
-        let objs = q.split('%'); //[name,eq,Binh]
-        if (objs.length === 3) {
-            if (objs[1] === 'eq') {
-                ret[objs[0]] = objs[2];
-            } else if (objs[1] === 'like') {
-                let objs1 = objs[2].split(',')
-                let m = objs1[0];
-                for (let i = 1; i < objs1.length; i++) {
-                    m += `.*${objs1[i]}`;
-                }
-                // let t = {$or : m};
-                let temp = { $regex: m };
+    if (query) {
+        let qs = query.split(';'); // 
+        for (let q of qs) { // q = name%eq%Binh
+            let objs = q.split('%'); //[name,eq,Binh]
+            if (objs.length === 3) {
+                if (objs[1] === 'eq') {
+                    ret[objs[0]] = objs[2];
+                } else if (objs[1] === 'like') {
+                    let objs1 = objs[2].split(',')
+                    let m = objs1[0];
+                    for (let i = 1; i < objs1.length; i++) {
+                        m += `.*${objs1[i]}`;
+                    }
+                    // let t = {$or : m};
+                    let temp = { $regex: m };
 
-                ret[objs[0]] = temp;
-            } else if (objs[1] === 'neq') {
-                let temp = { $ne: objs[2] };
-                ret[objs[0]] = temp;
+                    ret[objs[0]] = temp;
+                } else if (objs[1] === 'neq') {
+                    let temp = { $ne: objs[2] };
+                    ret[objs[0]] = temp;
+                }
             }
         }
     }
