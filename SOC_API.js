@@ -7,10 +7,13 @@ import mainAPI from './routers/MainRouters.js';
 import dashboardAPI from './routers/DashRouter.js';
 import userAPI from './routers/UserRouter.js';
 import alertAPI from './routers/AlertRouter.js';
+import authAPI from './routers/Authentication.js';
 import tenantAPI from './routers/TenantRouter.js';
 import { BAD_REQUEST, CREATED, NO_CONTENT, OK } from './constant/HttpResponseCode.js';
 import cookieParser from 'cookie-parser';
 import { publicMobile } from './Mqtt.js';
+import { validateTokenStaffAccess } from './token/ValidateToken.js';
+
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -23,11 +26,12 @@ const pass = process.env.SOC_API_PASSWORDDB;
 app.use(express.json())
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use('/api', mainAPI);
-app.use('/apiDash', dashboardAPI);
-app.use('/apiUser', userAPI);
-app.use('/apiAlert', alertAPI);
-app.use('/apiTenant', tenantAPI);
+// app.use('/api', mainAPI);
+app.use('/apiDash', validateTokenStaffAccess, dashboardAPI);
+app.use('/apiUser',validateTokenStaffAccess, userAPI);
+app.use('/apiAlert', validateTokenStaffAccess, alertAPI);
+app.use('/apiTenant',validateTokenStaffAccess, tenantAPI);
+app.use('/', authAPI)
 
 app.use((data, req, res, next) => {
     let statusCode = data.statusCode;

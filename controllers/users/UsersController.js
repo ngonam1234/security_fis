@@ -1,4 +1,4 @@
-import { BAD_REQUEST, OK, SYSTEM_ERROR } from "../../constant/HttpResponseCode.js";
+import { BAD_REQUEST, OK, SYSTEM_ERROR, Unauthorized } from "../../constant/HttpResponseCode.js";
 import User from "../../models/User.js";
 import myLogger from "../../winstonLog/winston.js";
 import bcrypt from 'bcrypt';
@@ -16,10 +16,12 @@ import Tenant from "../../models/Tenant.js";
 //     return ret;
 // }
 
-export async function getAllUser(query, limit, sort, page) {
+export async function getAllUser(tenantCodes, query, limit, sort, page) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     let query1 = parseStringQuery(query);
     myLogger.info("%o", query1);
+    
+    query1 = {...query1, tenant:{$in:tenantCodes}};
     let info = await User.find(query1).limit(limit).sort(sort);
     ret = { statusCode: OK, data: { info } };
     return ret;
@@ -159,11 +161,11 @@ export async function login(emailtxt, passwordtxt) {
     let model = await User.findOne(
         { email: emailtxt }
     )
+    if (model) {
 
     let { password, roleCode, tenant, permissions, fullname, username, email } = model;
+    myLogger.info("%o", { email, password, roleCode, tenant, permissions, fullname, username, email })
 
-    // myLogger.info("%o", { model, email, password, roleCode, tenant, permissions, fullname, username, email })
-    if (model) {
 
         let verify = bcrypt.compareSync(passwordtxt, password);
         if (verify) {
@@ -182,7 +184,7 @@ export async function login(emailtxt, passwordtxt) {
         }
     }
     else {
-        ret = { statusCode: BAD_REQUEST, data: { status: 'Bad Request' } };
+        ret = { statusCode: Unauthorized, data: { status: 'Login Failed' } };
 
     }
     return ret;

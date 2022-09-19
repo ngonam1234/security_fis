@@ -10,14 +10,14 @@ const router = express.Router();
 //     next(response);
 // })
 
-router.post('/create', validateTokenStaffAccess, async (req, res, next) => {
+router.post('/create', async (req, res, next) => {
     let { code, name } = req.body;
     let { email } = req.payload;
     let response = await createTanent(code, name, email);
     next(response);
 })
 
-router.put('/updateActive/:id', validateTokenStaffAccess, async (req, res, next) => {
+router.put('/updateActive/:id', async (req, res, next) => {
     let { id } = req.params;
     let { email } = req.payload;
     let { is_active } = req.body;
@@ -28,7 +28,7 @@ router.put('/updateActive/:id', validateTokenStaffAccess, async (req, res, next)
 })
 
 
-router.get('/:id', validateTokenStaffAccess, async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
     let { id } = req.params;
     let response = await getDetailTenant({ _id: id });
     next(response);
