@@ -7,7 +7,7 @@ import myLogger from "../../winstonLog/winston.js";
 
 
 
-export async function getAllAlert(start_day, end_day, tenant, limit) {
+export async function getAllAlert(start_day, end_day, tenant, limit, page) {
 
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     let today = new Date();
@@ -25,10 +25,19 @@ export async function getAllAlert(start_day, end_day, tenant, limit) {
             '$lt': endDate
         }
     }
-    let limitView = limit ? limit : 10
-    let info = await Alert.find(andCondition).limit(limitView).sort({ create_time: -1 });
-    myLogger.info("%o", info)
-    ret = { statusCode: OK, data: { info } };
+    let limitView = limit || 10
+    let pageView = page || 0 ;
+    pageView *= limitView
+    let alerts = await Alert.find(andCondition).limit(limitView).skip(Math.round(pageView)).sort({ create_time: -1 });
+    let info1 = await Alert.find(andCondition).sort({ create_time: -1 }).count();
+
+    let totalPage = Math.round( info1 / limitView);
+    if(info1 % limitView > 0){
+        totalPage += 1
+    }
+    myLogger.info("%o", totalPage)
+    // myLogger.info("%o", info)
+    ret = { statusCode: OK, data: { start_day, end_day, tenant, limit: limitView, alerts, totalPage, page: pageView } };
     return ret;
 }
 

@@ -45,6 +45,7 @@ const run = async () => {
             topic, partition, message
         }) => {
             let info = JSON.parse(message.value.toString())
+            // if(info.)
             let model = new AlertPack({
                 event_type: info.event_type,
                 id: info.data.id,
@@ -63,7 +64,7 @@ const run = async () => {
                 alert_score: info.data.alert_score,
                 alert_start_time: info.data.alert_start_time,
                 closing_reason: info.data.closing_reason,
-                // data_type:
+                // data_type: 
             })
             myLogger.info("This is log ===== %o", model)
             await model.save();
