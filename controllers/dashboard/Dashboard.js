@@ -1,6 +1,7 @@
 import { OK, SYSTEM_ERROR } from "../../constant/HttpResponseCode.js";
 import Alert from "../../models/Alert.js";
 import Sensor from "../../models/Sensor.js";
+import Tenant from "../../models/Tenant.js";
 import Ticket from "../../models/Ticket.js";
 import { formatDateFMT, parseDate } from "../../validation/ValidationUtil.js";
 import myLogger from "../../winstonLog/winston.js";
@@ -281,10 +282,12 @@ let tenant =
         }
     ]
 export async function getAllTenant() {
+    let info = await Tenant.find({});
+    myLogger.info("%o", info)
     let ret = [];
-    for (let t of tenant) {
-        let { id, name } = t;
-        ret.push({ id: id.toUpperCase(), name })
+    for (let t of info) {
+        let { code, name } = t;
+        ret.push({ id: code.toUpperCase(), name })
     }
     return { statusCode: OK, data: { tenants: ret } };
 }
