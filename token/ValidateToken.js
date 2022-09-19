@@ -56,9 +56,10 @@ export function refreshToken(refreshtoken) {
         algorithm: "RS256"
     }
     try {
+        myLogger.info("refreshtoken: %o", refreshtoken)
         let payload = jsonwebtoken.verify(refreshtoken, publicKEY, verifyOptions);
-        let { type, password, roleCode, tenant, permissions, fullname, username } = payload;
-        payload = {password, roleCode, tenant, permissions, fullname, username}
+        let { type,roleCode, tenants, permissions, fullname, email } = payload;
+        payload = { type,roleCode, tenants, permissions, fullname, email}
         myLogger.info("%o", payload)
         if (type !== "REFRESH_TOKEN") {
             return { status: false };

@@ -64,7 +64,7 @@ router.post('/login', async (req, res, next) => {
     next(response);
 })
 
-router.post('/refreshToken', validateTokenStaffAccess, async (req, res, next) => {
+router.post('/refreshToken', async (req, res, next) => {
     let { refreshtoken } = req.headers;
     let data = refreshToken(refreshtoken);
     let { status, accessToken } = data

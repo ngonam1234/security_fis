@@ -99,7 +99,7 @@ export async function login(emailtxt, passwordtxt) {
             let tenants = [];
             for (let tM of tenantModel) {
                 let { code, name } = tM;
-                tenants.push({ code, name });
+                tenants.push({ id: code, name });
             }
             myLogger.info("%o", tenants)
             let accessToken = genTokenStaff({ roleCode, tenants, permissions, fullname, email });
