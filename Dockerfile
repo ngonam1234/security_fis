@@ -13,5 +13,5 @@ ENV SOC_API_PORTNODE=3000
     COPY package.json /app  
     RUN npm install  
     COPY . /app  
-    EXPOSE 	3000  
+    EXPOSE 	8001  
     CMD node SOC_API.js
