@@ -55,6 +55,7 @@ app.use((data, req, res, next) => {
 
 
 const dburl = `mongodb://${user}:${pass}@${host}:${port}/${dbname}?serverSelectionTimeoutMS=5000&connectTimeoutMS=10000&authSource=${dbname}&authMechanism=SCRAM-SHA-256`
+// myLogger.info(dburl)
 mongoose.connect(dburl,
     { useNewUrlParser: true, useUnifiedTopology: true },
     (err) => {
