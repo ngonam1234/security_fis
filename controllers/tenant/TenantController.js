@@ -1,4 +1,4 @@
-import { OK, SYSTEM_ERROR } from "../../constant/HttpResponseCode.js";
+import { BAD_REQUEST, OK, SYSTEM_ERROR } from "../../constant/HttpResponseCode.js";
 import Tenant from "../../models/Tenant.js";
 import myLogger from "../../winstonLog/winston.js";
 
@@ -23,6 +23,9 @@ import myLogger from "../../winstonLog/winston.js";
 
 export async function createTanent(code, name, created_by) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
+    if (code.length == 0 || name.length == 0) {
+        ret = { statusCode: BAD_REQUEST, data: 'BUG' }
+    }
     let model = new Tenant({
         code: code,
         name: name,
@@ -31,7 +34,6 @@ export async function createTanent(code, name, created_by) {
         created_by: created_by
     })
     model.save();
-
     myLogger.info("%o", model)
     ret = { statusCode: OK, data: { model } };
     return ret;
@@ -69,9 +71,9 @@ export async function getDetailTenant(_id) {
 }
 
 const template1 = {
-    code:'Template1',
+    code: 'Template1',
     content: "This is param1 = {{param1}}....",
-    params:[
+    params: [
         "params1"
     ]
 }

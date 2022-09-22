@@ -1,6 +1,7 @@
 import express from 'express';
 import { createTanent, getDetailTenant, updateActive } from '../controllers/tenant/TenantController.js';
 import { validateTokenStaffAccess } from '../token/ValidateToken.js';
+import { loginValidate } from '../validation/Valid.js';
 import myLogger from '../winstonLog/winston.js';
 const router = express.Router();
 
@@ -10,7 +11,7 @@ const router = express.Router();
 //     next(response);
 // })
 
-router.post('/create', async (req, res, next) => {
+router.post('/create', loginValidate, async (req, res, next) => {
     let { code, name } = req.body;
     let { email } = req.payload;
     let response = await createTanent(code, name, email);
