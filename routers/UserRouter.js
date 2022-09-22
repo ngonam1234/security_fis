@@ -2,6 +2,7 @@ import express from 'express';
 import { OK, SYSTEM_ERROR } from '../constant/HttpResponseCode.js';
 import { changePassword, createUser, getAllUser, login, resetFirstLogin2FA, update } from '../controllers/users/UsersController.js';
 import { refreshToken, validateTokenStaffAccess } from '../token/ValidateToken.js';
+import { createUserValid } from '../validation/Valid.js';
 import myLogger from '../winstonLog/winston.js';
 
 const router = express.Router();
@@ -16,9 +17,9 @@ router.get('/getAllUser', async (req, res, next) => {
     next(response);
 })
 
-router.post('/createUser', async (req, res, next) => {
-    let { email, fullname, is_active, password, phone, role, telegram, tier, tenant } = req.body;
-    let response = await createUser(email, fullname, is_active, password, phone, role, telegram, tier, tenant);
+router.post('/createUser', createUserValid, async (req, res, next) => {
+    let { email, fullname, password, phone, role, telegram, tier, tenant } = req.body;
+    let response = await createUser(email, fullname, true, password, phone, role, telegram, tier, tenant);
     next(response);
 })
 

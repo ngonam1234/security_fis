@@ -1,6 +1,7 @@
 import express from 'express';
 import { createTicket, getAlert, getAllAlert, getDetailAlert, reviewAlert } from '../controllers/alert/AlertController.js';
 import { validateTokenStaffAccess } from '../token/ValidateToken.js';
+import { createTicketByAlert } from '../validation/Valid.js';
 import myLogger from '../winstonLog/winston.js';
 const router = express.Router();
 
@@ -32,7 +33,7 @@ router.put('/:id/', async (req, res, next) => {
     next(response);
 })
 
-router.post('/create/:id', async (req, res, next) => {
+router.post('/create/:id', createTicketByAlert, async (req, res, next) => {
     let { id } = req.params;
     let { severity, owners } = req.body;
     let { email } = req.payload;
