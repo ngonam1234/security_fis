@@ -21,21 +21,27 @@ import myLogger from "../../winstonLog/winston.js";
 // }
 
 
-export async function createTanent(code, name, created_by) {
+export async function createTanent(codetxt, name, created_by) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
-    if (code.length == 0 || name.length == 0) {
-        ret = { statusCode: BAD_REQUEST, data: 'BUG' }
-    }
     let model = new Tenant({
-        code: code,
+        code: codetxt,
         name: name,
         create_time: new Date(),
         is_active: false,
         created_by: created_by
     })
-    model.save();
-    myLogger.info("%o", model)
-    ret = { statusCode: OK, data: { model } };
+    let codeModel = await Tenant.findOne(
+        { code: codetxt }
+    )
+    myLogger.info("%o", codeModel)
+    if (codeModel?.code == codetxt) {
+        let dataInvaid = { status: 'Failed', description: `${codetxt} is duplicate`, error: "DATA_INVALID" }
+        ret = { statusCode: BAD_REQUEST, data: { dataInvaid } };
+    } else {
+        model.save();
+        // myLogger.info("%o", model)
+        ret = { statusCode: OK, data: { model } };
+    }
     return ret;
 
 }

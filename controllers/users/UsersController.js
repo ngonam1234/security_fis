@@ -119,7 +119,7 @@ export async function createUser(emailtxt, fullname, is_active, password, phonet
     )
     // myLogger.info("emailModel: %o", emailModel)
     if (emailModel?.email == emailtxt || phoneModel?.phone == phonetxt || telegramModel?.telegram == telegramtxt) {
-        let dataInvaid = { status: 'Failed', description: `${emailtxt}  or ${phonetxt} or ${telegramtxt} is duplicate`, error: "DATA_INVALID" }
+        let dataInvaid = { status: 'Failed', description: `email or phone or telegram is duplicate`, error: "DATA_INVALID" }
         ret = { statusCode: BAD_REQUEST, data: { dataInvaid } };
     } else {
         // myLogger.info("%o", model)
