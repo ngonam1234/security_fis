@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 router.get('/getAllAlert', async (req, res, next) => {
-    let { start_day, end_day, tenant, limit, page } = req.body;
+    let { start_day, end_day, tenant, limit, page } = req.query;
     let response = await getAllAlert(start_day, end_day, tenant, limit, page);
     next(response);
 })
