@@ -20,8 +20,8 @@ export async function getAllUser(tenantCodes, query, limit, sort, page) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     let query1 = parseStringQuery(query);
     myLogger.info("%o", query1);
-    
-    query1 = {...query1, tenant:{$in:tenantCodes}};
+
+    query1 = { ...query1, tenant: { $in: tenantCodes } };
     let info = await User.find(query1).limit(limit).sort(sort);
     ret = { statusCode: OK, data: { info } };
     return ret;
@@ -91,26 +91,41 @@ function parseStringQuery(query) {
 }
 
 
-export async function createUser(email, fullname, is_active, password, phone, role, telegram, tier, tenant) {
+export async function createUser(emailtxt, fullname, is_active, password, phonetxt, role, telegramtxt, tier, tenant) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
 
     let model = new User({
         id: v1(),
         fullname: fullname,
-        email: email,
+        email: emailtxt,
         password: await bcrypt.hash(password, await bcrypt.genSalt(10)),
         is_active: is_active,
         role: role,
         tier: tier,
         create_time: new Date(),
-        phone: phone,
-        telegram: telegram,
+        phone: phonetxt,
+        telegram: telegramtxt,
         tenant: tenant
     })
-    model.save();
 
-    myLogger.info("%o", model)
-    ret = { statusCode: OK, data: { model } };
+    let emailModel = await User.findOne(
+        { email: emailtxt }
+    )
+    let phoneModel = await User.findOne(
+        { phone: phonetxt }
+    )
+    let telegramModel = await User.findOne(
+        { telegram: telegramtxt }
+    )
+    // myLogger.info("emailModel: %o", emailModel)
+    if (emailModel?.email == emailtxt || phoneModel?.phone == phonetxt || telegramModel?.telegram == telegramtxt) {
+        let dataInvaid = { status: 'Failed', description: `${emailtxt}  or ${phonetxt} or ${telegramtxt} is duplicate`, error: "DATA_INVALID" }
+        ret = { statusCode: BAD_REQUEST, data: { dataInvaid } };
+    } else {
+        // myLogger.info("%o", model)
+        model.save();
+        ret = { statusCode: OK, data: { model } };
+    }
     return ret;
 
 }
@@ -163,8 +178,8 @@ export async function login(emailtxt, passwordtxt) {
     )
     if (model) {
 
-    let { password, roleCode, tenant, permissions, fullname, username, email } = model;
-    myLogger.info("%o", { email, password, roleCode, tenant, permissions, fullname, username, email })
+        let { password, roleCode, tenant, permissions, fullname, username, email } = model;
+        myLogger.info("%o", { email, password, roleCode, tenant, permissions, fullname, username, email })
 
 
         let verify = bcrypt.compareSync(passwordtxt, password);
