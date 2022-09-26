@@ -32,9 +32,9 @@ export async function getAllAlert(start_day, end_day, tenant, limit, page) {
     let info1 = await Alert.find(andCondition).sort({ create_time: -1 }).count();
 
     let totalPage = Math.round( info1 / limitView);
-    if(info1 % limitView > 0){
-        totalPage += 1
-    }
+    // if(info1 % limitView > 0){
+    //     totalPage += 1
+    // }
     myLogger.info("%o", totalPage)
     // myLogger.info("%o", info)
     ret = { statusCode: OK, data: { start_day, end_day, tenant, limit: limitView, alerts, totalPage, page: pageView, pageIndex: page } };
