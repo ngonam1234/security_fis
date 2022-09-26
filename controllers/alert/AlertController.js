@@ -37,7 +37,7 @@ export async function getAllAlert(start_day, end_day, tenant, limit, page) {
     }
     myLogger.info("%o", totalPage)
     // myLogger.info("%o", info)
-    ret = { statusCode: OK, data: { start_day, end_day, tenant, limit: limitView, alerts, totalPage, page: pageView, pageIndex: pa } };
+    ret = { statusCode: OK, data: { start_day, end_day, tenant, limit: limitView, alerts, totalPage, page: pageView, pageIndex: page } };
     return ret;
 }
 
