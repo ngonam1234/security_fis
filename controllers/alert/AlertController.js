@@ -118,7 +118,7 @@ export async function getAlert(query, limit, sort, page) {
     let info = await Alert.find(query1).limit(limit).skip(Math.round(pageView)).sort(sort);
     let info1 = await Alert.find(query1).sort(sort).count();
     let totalPage = Math.round(info1 / limitView);
-    ret = { statusCode: OK, data: {limit: limitView++, pageIndex: page++, totalPage, page: pageView, info } };
+    ret = { statusCode: OK, data: {limit: limitView++, pageIndex: page == null ? 0 : page++, totalPage, page: pageView, info } };
     return ret;
 }
 
