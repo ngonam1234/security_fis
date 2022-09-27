@@ -141,6 +141,20 @@ export async function update(filter, body) {
 }
 
 
+export async function getUserOwner(emailtxt) {
+    let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
+    let model = await User.find(
+        {
+            email: {
+                $regex: '.*' + emailtxt + '.*'
+            }
+        }
+    )
+    myLogger.info("%o", model)
+    ret = { statusCode: OK, data: model };
+    return ret;
+}
+
 export async function resetFirstLogin2FA(id) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     let model = await User.findOneAndUpdate(

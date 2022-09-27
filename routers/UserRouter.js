@@ -1,6 +1,6 @@
 import express from 'express';
 import { OK, SYSTEM_ERROR } from '../constant/HttpResponseCode.js';
-import { changePassword, createUser, getAllUser, login, resetFirstLogin2FA, update } from '../controllers/users/UsersController.js';
+import { changePassword, createUser, getAllUser, getUserOwner, login, resetFirstLogin2FA, update } from '../controllers/users/UsersController.js';
 import { refreshToken, validateTokenStaffAccess } from '../token/ValidateToken.js';
 import { createUserValid } from '../validation/Valid.js';
 import myLogger from '../winstonLog/winston.js';
@@ -14,6 +14,12 @@ router.get('/getAllUser', async (req, res, next) => {
     let { tenantCodes } = req;
     myLogger.info("tenantCodes: %o", tenantCodes)
     let response = await getAllUser(tenantCodes, query, limit, sort, page);
+    next(response);
+})
+
+router.get('/getOwner', async (req, res, next) => {
+    let { email } = req.query;
+    let response = await getUserOwner(email);
     next(response);
 })
 
