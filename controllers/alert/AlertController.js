@@ -112,8 +112,13 @@ export async function getAlert(query, limit, sort, page) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     let query1 = parseStringQuery(query);
     myLogger.info("%o", query1);
-    let info = await Alert.find(query1).limit(limit).sort(sort);
-    ret = { statusCode: OK, data: { info } };
+    let limitView = limit || 10
+    let pageView = page || 0;
+    pageView *= limitView
+    let info = await Alert.find(query1).limit(limit).skip(Math.round(pageView)).sort(sort);
+    let info1 = await Alert.find(query1).sort(sort).count();
+    let totalPage = Math.round(info1 / limitView);
+    ret = { statusCode: OK, data: {limit: limitView++, pageIndex: page++, totalPage, page: pageView, info } };
     return ret;
 }
 
