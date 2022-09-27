@@ -26,12 +26,12 @@ export async function getAllAlert(start_day, end_day, tenant, limit, page) {
         }
     }
     let limitView = limit || 10
-    let pageView = page || 0 ;
+    let pageView = page || 0;
     pageView *= limitView
     let alerts = await Alert.find(andCondition).limit(limitView).skip(Math.round(pageView)).sort({ create_time: -1 });
     let info1 = await Alert.find(andCondition).sort({ create_time: -1 }).count();
 
-    let totalPage = Math.round( info1 / limitView);
+    let totalPage = Math.round(info1 / limitView);
     // if(info1 % limitView > 0){
     //     totalPage += 1
     // }
@@ -127,12 +127,19 @@ export async function reviewAlert(filter, body) {
     return ret;
 }
 
+export async function updateIs_Ticket(filter, body) {
+    let model = await Alert.findOneAndUpdate(
+        filter, body, { new: true }
+    )
+    myLogger.info("%o", model)
+}
+
 
 export async function createTicket(idAlert, severity, created_by, owners) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
-    myLogger.info("%o", {idAlert, severity, created_by, owners})
-    let info = await Alert.findOne({ id:idAlert })
-    myLogger.info("%o",info)
+    myLogger.info("%o", { idAlert, severity, created_by, owners })
+    let info = await Alert.findOne({ id: idAlert })
+    myLogger.info("%o", info)
     let model = new Ticket({
         id: v1(),
         alert_id: info.id,
@@ -146,6 +153,10 @@ export async function createTicket(idAlert, severity, created_by, owners) {
         owner_id: owners,
     })
     model.save();
+    if (idAlert !== undefined) {
+        let updateIsTicket = await updateIs_Ticket({ id: idAlert }, { is_ticket: true })
+        myLogger.info("%o", updateIsTicket)
+    }
     myLogger.info("%o", model)
     ret = { statusCode: OK, data: { model } };
     return ret;
