@@ -157,6 +157,12 @@ export async function updateIs_Ticket(filter, body) {
 export async function createTicket(idAlert, severity, created_by, owners) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     myLogger.info("%o", { idAlert, severity, created_by, owners })
+    let listOwner = [];
+    owners.forEach(o => {
+        let { id, email } = o;
+        listOwner.push({ id, email })
+    })
+    myLogger.info("listOwner %o", listOwner)
     let info = await Alert.findOne({ id: idAlert })
     myLogger.info("%o", info)
     let model = new Ticket({
@@ -169,14 +175,14 @@ export async function createTicket(idAlert, severity, created_by, owners) {
         created_by,
         create_time: new Date(),
         is_closed: true,
-        owner_id: owners,
+        owner_id: listOwner,
     })
     model.save();
     if (idAlert !== undefined) {
         let updateIsTicket = await updateIs_Ticket({ id: idAlert }, { is_ticket: true })
-        myLogger.info("%o", updateIsTicket)
+        // myLogger.info("%o", updateIsTicket)
     }
-    myLogger.info("%o", model)
+    // myLogger.info("%o", model)
     ret = { statusCode: OK, data: { model } };
     return ret;
 }

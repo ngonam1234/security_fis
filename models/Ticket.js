@@ -38,7 +38,7 @@ const Tickets = mongoose.Schema({
         required: false,
     },
     owner_id: {
-        type: String,
+        type: Object,
         required: false,
     },
     details: {
