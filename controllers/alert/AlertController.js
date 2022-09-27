@@ -32,11 +32,12 @@ export async function getAllAlert(start_day, end_day, tenant, limit, page) {
     let info1 = await Alert.find(andCondition).sort({ create_time: -1 }).count();
 
     let totalPage = Math.round(info1 / limitView);
-    // if(info1 % limitView > 0){
-    //     totalPage += 1
-    // }
+    if(info1 % limitView > 0){
+        totalPage -= 1
+    }
+    myLogger.info("%o", info1 / limitView)
     myLogger.info("%o", totalPage)
-    // myLogger.info("%o", info)
+    myLogger.info("pageView %o", pageView)
     ret = { statusCode: OK, data: { start_day, end_day, tenant, limit: limitView, alerts, totalPage, page: pageView, pageIndex: page } };
     return ret;
 }
@@ -118,6 +119,12 @@ export async function getAlert(query, limit, sort, page) {
     let info = await Alert.find(query1).limit(limit).skip(Math.round(pageView)).sort(sort);
     let info1 = await Alert.find(query1).sort(sort).count();
     let totalPage = Math.round(info1 / limitView);
+    myLogger.info("info1 %o", info1)
+    myLogger.info("totalPage %o", totalPage)
+    // if(info1 % limitView > 0){
+    //     totalPage += 1
+    // }
+    myLogger.info("totalPage %o", totalPage)
     ret = { statusCode: OK, data: {limit: limitView++, pageIndex: page == null ? 0 : page++, totalPage, page: pageView, info } };
     return ret;
 }
