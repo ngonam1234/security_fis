@@ -85,6 +85,14 @@ const Alert = mongoose.Schema({
     rule_name: {
         type: String,
         required: false
+    },
+    description_review: {
+        type: String,
+        required: false
+    },
+    fasle_positive: {
+        type: Boolean,
+        required: false
     }
 })
 

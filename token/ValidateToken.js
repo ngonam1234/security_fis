@@ -22,7 +22,7 @@ export function validateTokenStaffAccess(req, res, next) {
             tenantCodes.push(id);
         }
         req.tenantCodes = tenantCodes;
-        myLogger.info("tenants: %o", tenants)
+        // myLogger.info("tenants: %o", tenants)
         if (type !== "ACCESS_TOKEN") {
             return next({ statusCode: Unauthorized, error: "WRONG_TOKEN", description: "Wrong token type" });
         }
@@ -67,7 +67,7 @@ export function refreshToken(refreshtoken) {
         let payload = jsonwebtoken.verify(refreshtoken, publicKEY, verifyOptions);
         let { type, roleCode, tenants, permissions, fullname, email } = payload;
         payload = { type, roleCode, tenants, permissions, fullname, email }
-        myLogger.info("%o", payload)
+        // myLogger.info("%o", payload)
         if (type !== "REFRESH_TOKEN") {
             return { status: false };
         } else {

@@ -146,6 +146,24 @@ export async function reviewAlert(filter, body) {
     return ret;
 }
 
+
+export async function reviewAlert2(idtxt) {
+    let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
+    let listId = [];
+    idtxt.forEach(o => {
+        listId.push(o)
+    })
+    // myLogger.info("listId %o", listId)
+
+    let model = await Alert.updateMany(
+        { id: { $in: listId } },
+        { $set: { is_closed: true, reviewed_time: new Date() } }
+    )
+    // myLogger.info("%o", model)
+    ret = { statusCode: OK, data: model };
+    return ret;
+}
+
 export async function updateIs_Ticket(filter, body) {
     let model = await Alert.findOneAndUpdate(
         filter, body, { new: true }

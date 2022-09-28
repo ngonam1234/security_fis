@@ -1,5 +1,5 @@
 import express from 'express';
-import { createTicket, getAlert, getAllAlert, getDetailAlert, reviewAlert } from '../controllers/alert/AlertController.js';
+import { createTicket, getAlert, getAllAlert, getDetailAlert, reviewAlert, reviewAlert2, updateIs_Ticket } from '../controllers/alert/AlertController.js';
 import { validateTokenStaffAccess } from '../token/ValidateToken.js';
 import { createTicketByAlert } from '../validation/Valid.js';
 import myLogger from '../winstonLog/winston.js';
@@ -25,13 +25,30 @@ router.get('/', async (req, res, next) => {
     next(response);
 })
 
-router.put('/:id/', async (req, res, next) => {
-    myLogger.info("in ---------------")
-    let { id } = req.params;
+// router.put('/:id/', async (req, res, next) => {
+//     myLogger.info("in ---------------")
+//     let { id } = req.params;
+//     let response = undefined;
+//     response = await reviewAlert({ id }, { reviewed_time: new Date(), is_closed: true});
+//     next(response);
+// })
+
+router.put('/review', async (req, res, next) => {
+    let { id } = req.body;
     let response = undefined;
-    response = await reviewAlert({ id }, { reviewed_time: new Date() });
+    response = await reviewAlert2(id);
     next(response);
 })
+
+
+// router.put('/is_close/:id/', async (req, res, next) => {
+//     myLogger.info("in ---------------")
+//     let { id } = req.params;
+//     let response = undefined;
+//     response = await updateIs_Ticket({ id }, { is_closed: true });
+//     next(response);
+// })
+
 
 router.post('/create/:id', createTicketByAlert, async (req, res, next) => {
     let { id } = req.params;
