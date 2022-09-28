@@ -177,8 +177,7 @@ export async function createTicket(idAlert, severity, created_by, owners) {
     myLogger.info("%o", { idAlert, severity, created_by, owners })
     let listOwner = [];
     owners.forEach(o => {
-        let { id, email } = o;
-        listOwner.push({ id, email })
+        listOwner.push(o)
     })
     myLogger.info("listOwner %o", listOwner)
     let info = await Alert.findOne({ id: idAlert })
