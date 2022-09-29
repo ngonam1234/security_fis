@@ -154,13 +154,17 @@ export async function reviewAlert2(idtxt) {
         listId.push(o)
     })
     // myLogger.info("listId %o", listId)
-
-    let model = await Alert.updateMany(
-        { id: { $in: listId } },
-        { $set: { is_closed: true, reviewed_time: new Date() } }
-    )
-    // myLogger.info("%o", model)
-    ret = { statusCode: OK, data: model };
+    if (listId.length === 0) {
+        let dataInvaid = { status: 'Failed', description: `Please select at least one message`, error: "DATA_INVALID" }
+        ret = { statusCode: BAD_REQUEST, data: { dataInvaid } };
+    } else {
+        let model = await Alert.updateMany(
+            { id: { $in: listId } },
+            { $set: { is_closed: true, reviewed_time: new Date() } }
+        )
+        // myLogger.info("%o", model)
+        ret = { statusCode: OK, data: model };
+    }
     return ret;
 }
 
