@@ -53,13 +53,13 @@ router.put('/review', async (req, res, next) => {
 router.post('/create/:id', createTicketByAlert, async (req, res, next) => {
     let { id } = req.params;
     let { severity, owners } = req.body;
+    if (owners.length == 0) {
+        myLogger.info('BUG')
+    }
     let { email } = req.payload;
     let acc = email.split("@");
     let response = await createTicket(id, severity, acc[0], owners);
     next(response)
 })
-
-
-
 
 export default router;

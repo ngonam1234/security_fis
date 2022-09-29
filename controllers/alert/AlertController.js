@@ -168,38 +168,55 @@ export async function updateIs_Ticket(filter, body) {
     let model = await Alert.findOneAndUpdate(
         filter, body, { new: true }
     )
-    myLogger.info("%o", model)
+    // myLogger.info("%o", model)
 }
 
+function checkIfDuplicateExists(arr) {
+    return new Set(arr).size !== arr.length
+}
 
 export async function createTicket(idAlert, severity, created_by, owners) {
     let ret = { statusCode: SYSTEM_ERROR, error: 'ERROR', description: 'First error!' };
     myLogger.info("%o", { idAlert, severity, created_by, owners })
     let listOwner = [];
+
     owners.forEach(o => {
         listOwner.push(o)
     })
-    myLogger.info("listOwner %o", listOwner)
-    let info = await Alert.findOne({ id: idAlert })
-    myLogger.info("%o", info)
-    let model = new Ticket({
-        id: v1(),
-        alert_id: info.id,
-        demisto_id: 'comming',
-        ticket_name: info.alert_name,
-        tenant: info.tenant,
-        severity,
-        created_by,
-        create_time: new Date(),
-        is_closed: true,
-        owner_id: listOwner,
-    })
-    model.save();
-    if (idAlert !== undefined) {
-        let updateIsTicket = await updateIs_Ticket({ id: idAlert }, { is_ticket: true })
-        // myLogger.info("%o", updateIsTicket)
+    myLogger.info("listOwner size %o", listOwner.length)
+
+    if (listOwner.length === 0) {
+        myLogger.info("in ->>>>>>>>>>>>")
+        let dataInvaid = { status: 'Failed', description: `owner is required`, error: "DATA_INVALID" }
+        ret = { statusCode: BAD_REQUEST, data: { dataInvaid } };
     }
-    // myLogger.info("%o", model)
-    ret = { statusCode: OK, data: { model } };
+    else if (checkIfDuplicateExists(listOwner) == true) {
+        myLogger.info('BUG')
+        let dataInvaid = { status: 'Failed', description: `owner is Duplicate`, error: "DATA_INVALID" }
+        ret = { statusCode: BAD_REQUEST, data: { dataInvaid } };
+    }
+    else {
+        let info = await Alert.findOne({ id: idAlert })
+        // myLogger.info("%o", info)
+        let model = new Ticket({
+            id: v1(),
+            alert_id: info.id,
+            demisto_id: 'comming',
+            ticket_name: info.alert_name,
+            tenant: info.tenant,
+            severity,
+            created_by,
+            create_time: new Date(),
+            is_closed: true,
+            owner_id: listOwner,
+        })
+        model.save();
+        if (idAlert !== undefined) {
+            let updateIsTicket = await updateIs_Ticket({ id: idAlert }, { is_ticket: true })
+            // myLogger.info("%o", updateIsTicket)
+        }
+        // myLogger.info("%o", model)
+        ret = { statusCode: OK, data: { model } };
+    }
     return ret;
 }
